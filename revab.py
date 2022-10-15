@@ -1,4 +1,3 @@
-import itertools
 import random
 from enum import Enum
 
@@ -40,75 +39,89 @@ def check_user_guess(abbrev, guess, words):
     #if second best guess (and any ties): 2 points
     #third best: 3points, so on
     #not valid: 10 points
+    WRONG_POINTS = 0
+    CORRECT_POINTS = 10
     
     normalized_guess = guess.strip().lower()
-    if normalized_guess not in words:
-        return GuessOutcome.INVALID_WORD, 10
-    
     revabs = all_possible_words_for_abbreviation(abbrev, words)
 
-    print(revabs)
-
     if len(revabs) != 0 and normalized_guess == ".":
-        return GuessOutcome.NONE_IS_INCORRECT, 10
+        return GuessOutcome.NONE_IS_INCORRECT, WRONG_POINTS
     
     if len(revabs) == 0 and normalized_guess == ".":
-        return GuessOutcome.NONE_IS_CORRECT, 1
+        return GuessOutcome.NONE_IS_CORRECT, CORRECT_POINTS
+    
+    if normalized_guess not in words:
+        return GuessOutcome.INVALID_WORD, WRONG_POINTS
     
     if normalized_guess not in revabs:
-        return GuessOutcome.NOT_REVAB, 10
+        return GuessOutcome.NOT_REVAB, WRONG_POINTS
     
     sorted_revab_lengths = sorted({len(word) for word in revabs})
-    lengths_to_points = {length: index + 1 for index, length in enumerate(sorted_revab_lengths)}
+    lengths_to_points = {length: CORRECT_POINTS-index for index, length in enumerate(sorted_revab_lengths)}
     user_points = lengths_to_points[len(normalized_guess)]
 
-    if user_points == 1:
-        return GuessOutcome.BEST_WORD, 1
+    # print(lengths_to_points)
+
+    if user_points == CORRECT_POINTS:
+        return GuessOutcome.BEST_WORD, CORRECT_POINTS
     
-    return GuessOutcome.REVAB_BUT_NOT_BEST, user_points
+    return GuessOutcome.REVAB_BUT_NOT_BEST, max(user_points, 3)
 
 def generate_abbrev(abbrev_length=3):
     letters = "abcdefghijklmnopqrstuvwxyz"
     return "".join([random.choice(letters) for _ in range(abbrev_length)])
 
-def play_game(rounds=5, abbrev_length=3, tries_per_round=3):
+def play_game(words, rounds=5, abbrev_length=3, tries_per_round=3):
+    #sum of points across all their rounds
+    game_points = 0
     #play certain number of rounds
     for _ in range(rounds):
         #generate abbrev
         abbrev = generate_abbrev(abbrev_length)
-        #let user guess
+
+        #points in a round is the max of the user's guesses
+        round_points = 0
         for _ in range(tries_per_round):
             user_guess = input(f"Enter the shortest revab for {abbrev}, or type . if you think none exist: ")
-            points_on_guess = check_user_guess(abbrev, user_guess)
+            outcome, points_on_guess = check_user_guess(abbrev, user_guess, words)
+            round_points = max(round_points, points_on_guess)
 
-        pass
-    pass
+            if outcome == GuessOutcome.BEST_WORD:
+                print(f"Congratulations! {user_guess} is the shortest revab of {abbrev}.")
+                break
+            elif outcome == GuessOutcome.NONE_IS_CORRECT:
+                print(f"Congratulations! There is no revab of {abbrev}.")
+                break
+            elif outcome == GuessOutcome.REVAB_BUT_NOT_BEST:
+                print(f"Good job! {user_guess} is a revab of {abbrev}, but it's not the shortest. This guess is worth {points_on_guess} points.")
+            elif outcome == GuessOutcome.NONE_IS_INCORRECT:
+                print(f"Wrong! There is a revab for {abbrev}.")
+            elif outcome == GuessOutcome.NOT_REVAB:
+                print(f"Unfortunately, {user_guess} is not a revab of {abbrev}.")
+            elif outcome == GuessOutcome.INVALID_WORD:
+                print(f"Unfortunately, {user_guess} is not a valid word according to our dictionary.")
+        
+        game_points += round_points
+        print(f"The shortest revab was {shortest_word_for_abbreviation(abbrev, words)}.")
+        print(f"You scored {round_points} last round.")
+        print(f"Your current score is {game_points}.")
+    
+    print(f"Your final score is {game_points}!")
+    return game_points
 
-def main(abbrev):
+#best word gets most points
+#words with same length are a tie
+#shortest word(s) get ten points
+#second shortest get nine points, and so on
+#if they don't get any word, they get zero points
+
+if __name__ == "__main__":
     #http://www.gwicks.net/dictionaries.htm
     #english list with 84_000 words
     #I then fixed words that had é (like éclat), and fixed start of line 1541
     with open("words.txt") as f:
         words = {line.strip() for line in f}
 
-    revab = shortest_word_for_abbreviation(abbrev, words)
-    print(abbrev, revab)
+    play_game(words)
 
-#like golf, best word gets fewest points
-#words with same length are a tie
-#shortest word(s) get one point
-#second shortest get two, and so on
-#if they don't get any word, they get ten points
-
-if __name__ == "__main__":
-    with open("words.txt") as f:
-        words = {line.strip() for line in f}
-
-    while True:
-        abbrev = generate_abbrev()
-        revabs = all_possible_words_for_abbreviation(abbrev)
-        print(revabs)
-        input() #pause
-
-        user_guess = input(f"guess {abbrev}: ")
-        print( check_user_guess(abbrev, user_guess, words) )
