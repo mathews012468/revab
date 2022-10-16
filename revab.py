@@ -10,7 +10,7 @@ class GuessOutcome(Enum):
     NONE_IS_CORRECT = 6 #there are no revabs and the user got this right
 
 
-def is_abbreviation(abbrev, word):
+def _is_abbreviation(abbrev, word):
     """
     Returns True if word is a revab of abbrev, False otherwise
     "is revab" is the same as saying "is subsequence" but in reverse order
@@ -31,17 +31,17 @@ def is_abbreviation(abbrev, word):
     return True
 
 
-def all_possible_words_for_abbreviation(abbrev, words):
+def _all_possible_words_for_abbreviation(abbrev, words):
     """
     Returns a set of all revabs (lowercased) of abbrev in words.
 
     abbrev: str
     words: any iterable of strings, but I'm (almost) always passing in a set. Set of all words in dictionary.
     """
-    return {word.lower() for word in words if is_abbreviation(abbrev, word)}
+    return {word.lower() for word in words if _is_abbreviation(abbrev, word)}
 
 
-def shortest_word_for_abbreviation(abbrev, words):
+def _shortest_word_for_abbreviation(abbrev, words):
     """
     Returns shortest revab for abbrev in words. 
     If there is a tie, we pick one. 
@@ -54,13 +54,14 @@ def shortest_word_for_abbreviation(abbrev, words):
     #for each word in words
     # check if abbrev could be an abbreviation of word
     # add to possible list
-    revabs = all_possible_words_for_abbreviation(abbrev, words)
+    revabs = _all_possible_words_for_abbreviation(abbrev, words)
 
     #for all possible revabs
     # return smallest
     return min(revabs, key=len, default="")
 
-def check_user_guess(abbrev, guess, words):
+
+def _check_user_guess(abbrev, guess, words):
     """
     Determines the outcome of a user guess.
     Return a 2-tuple of a GuessOutcome and number of points earned on the guess.
@@ -89,7 +90,7 @@ def check_user_guess(abbrev, guess, words):
     CORRECT_POINTS = 10
     
     normalized_guess = guess.strip().lower()
-    revabs = all_possible_words_for_abbreviation(abbrev, words)
+    revabs = _all_possible_words_for_abbreviation(abbrev, words)
 
     if len(revabs) != 0 and normalized_guess == ".":
         return GuessOutcome.NONE_IS_INCORRECT, WRONG_POINTS
@@ -116,7 +117,7 @@ def check_user_guess(abbrev, guess, words):
     return GuessOutcome.REVAB_BUT_NOT_BEST, max(user_points, 3)
 
 
-def generate_abbrev(abbrev_length=3):
+def _generate_abbrev(abbrev_length=3):
     """
     Generate abbreviation for the user to guess.
 
@@ -142,13 +143,13 @@ def play_game(words, rounds=5, abbrev_length=3, tries_per_round=3):
     #play certain number of rounds
     for _ in range(rounds):
         #generate abbrev
-        abbrev = generate_abbrev(abbrev_length)
+        abbrev = _generate_abbrev(abbrev_length)
 
         #points in a round is the max of the user's guesses
         round_points = 0
         for _ in range(tries_per_round):
             user_guess = input(f"Enter the shortest revab for {abbrev}, or type . if you think none exist: ")
-            outcome, points_on_guess = check_user_guess(abbrev, user_guess, words)
+            outcome, points_on_guess = _check_user_guess(abbrev, user_guess, words)
             round_points = max(round_points, points_on_guess)
 
             if outcome == GuessOutcome.BEST_WORD:
@@ -167,7 +168,7 @@ def play_game(words, rounds=5, abbrev_length=3, tries_per_round=3):
                 print(f"Unfortunately, {user_guess} is not a valid word according to our dictionary.")
         
         game_points += round_points
-        print(f"The shortest revab was {shortest_word_for_abbreviation(abbrev, words)}.")
+        print(f"The shortest revab was {_shortest_word_for_abbreviation(abbrev, words)}.")
         print(f"You scored {round_points} last round.")
         print(f"Your current score is {game_points}.")
     
@@ -182,6 +183,4 @@ if __name__ == "__main__":
     with open("words.txt") as f:
         words = {line.strip() for line in f}
 
-    play_game(words, rounds=3, abbrev_length=4, tries_per_round=2)
-
-
+    play_game(words, rounds=5, abbrev_length=3, tries_per_round=3)
