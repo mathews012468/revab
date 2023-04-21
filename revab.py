@@ -180,6 +180,7 @@ if __name__ == "__main__":
     #http://www.gwicks.net/dictionaries.htm
     #english list with 84_000 words
     #I then fixed words that had é (like éclat), and fixed start of line 1541
+    #I added remix and variants
     with open("words.txt") as f:
         words = {line.strip() for line in f}
 
