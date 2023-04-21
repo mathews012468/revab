@@ -179,8 +179,6 @@ def play_game(words, rounds=5, abbrev_length=3, tries_per_round=3):
 if __name__ == "__main__":
     #http://www.gwicks.net/dictionaries.htm
     #english list with 84_000 words
-    #I then fixed words that had é (like éclat), and fixed start of line 1541
-    #I added remix and variants
     with open("words.txt") as f:
         words = {line.strip() for line in f}
 
