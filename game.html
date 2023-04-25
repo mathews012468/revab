@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Revab</title>
+  <meta name="description" content="Find the shortest reverse abbreviation." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="css/styles.css">
+  <link type="text/css" rel="stylesheet" href="css/game-page.css">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+
+<body>
+  <header>
+    <h1>Revab</h1>
+    <div class="icons">
+      <button>
+        <img src="img/question_mark.png" alt="?">
+      </button>
+      <button>
+        <img src="img/stats.png" alt="stats">
+      </button>
+    </div>
+  </header>
+  <main>
+    <section id="first-row">
+      <div id="total-points">Total Points: 20</div>
+      <div id="round-history">
+        <table>
+          <thead>
+            <th></th>
+            <th>Abbreviation</th>
+            <th>Your best guess</th>
+            <th>Score</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1.</td>
+              <td>lvl</td>
+              <td>level</td>
+              <td>10</td>
+            </tr>
+            <tr>
+              <td>2.</td>
+              <td>mrt</td>
+              <td>mart</td>
+              <td>10</td>
+            </tr>
+            <tr>
+              <td>3.</td>
+              <td>...</td>
+              <td>...</td>
+              <td>...</td>
+            </tr>
+            <tr>
+              <td>4.</td>
+              <td>...</td>
+              <td>...</td>
+              <td>...</td>
+            </tr>
+            <tr>
+              <td>5.</td>
+              <td>...</td>
+              <td>...</td>
+              <td>...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <hr />
+    <section id="second-row">
+      <h2>
+        Abbreviation 3 of 5
+      </h2>
+      <div id="revab">
+        <span class="revab-letter">K</span>
+        <span class="revab-letter">W</span>
+        <span class="revab-letter">I</span>
+      </div>
+      <div id="guess-input">
+        <div class="guess-input-row">
+          <input type="text" placeholder="Guess" id="revab-guess">
+          <button>Guess</button>
+        </div>
+        <div>or</div>
+        <button>No revab possible</button>
+      </div>
+    </section>
+    <hr />
+    <section id="third-row">
+      <h2>Guess history</h2>
+      <table>
+        <thead>
+          <th></th>
+          <th>Guess</th>
+          <th>Result</th>
+          <th>Points</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1.</td>
+            <td>Kawhi</td>
+            <td>Not a recognized word</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>2.</td>
+            <td>...</td>
+            <td>...</td>
+            <td>...</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+
+</html>

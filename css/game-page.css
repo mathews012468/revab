@@ -1,0 +1,54 @@
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em auto;
+    padding: 0;
+}
+
+.revab-letter {
+    display: inline-block;
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #000000;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+#first-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#first-row div {
+    flex: 1;
+    margin: 0 10px;
+}
+
+#total-points {
+    text-align: center;
+    font-size: 3em;
+}
+
+#second-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+#guess-input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+#third-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
