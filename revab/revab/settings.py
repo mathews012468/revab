@@ -30,6 +30,9 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+#for templates and some other stuff to work, I added revabapp
+#apparently this was in the docs but I didn't see it, found the
+#answer in https://stackoverflow.com/a/73620984
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'revabapp'
 ]
 
 MIDDLEWARE = [

@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -7,8 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
-    <link type="text/css" rel="stylesheet" href="css/styles.css">
-    <link type="text/css" rel="stylesheet" href="css/start-page.css">
+    <link type="text/css" rel="stylesheet" href="{% static 'revabapp/css/styles.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'revabapp/css/start-page.css' %}">
     <meta name="viewport" content="width=device-width,initial-scale=1">
   </head>
   <body>
@@ -16,10 +18,10 @@
       <h1>Revab</h1>
       <div class="icons">
         <button>
-          <img src="img/question_mark.png" alt="?">
+          <img src="{% static 'revabapp/img/question_mark.png' %}" alt="?">
         </button>
         <button>
-          <img src="img/stats.png" alt="stats">
+          <img src="{% static 'revabapp/img/stats.png' %}" alt="stats">
         </button>
       </div>
     </header>
@@ -28,7 +30,7 @@
         <div id="start-row">
           <button id="start-button">Start Game</button>
           <button id="settings">
-            <img src="img/settings.png" alt="settings">
+            <img src="{% static 'revabapp/img/settings.png' %}" alt="settings">
           </button>
         </div>
       </div>
