@@ -18,7 +18,7 @@ def game(request):
     context = {
         "rounds": rounds,
         "abbrev": abbrev,
-        "abbrev_number": 1, 
+        "attempt_number": 1,
         "attempts_per_round": attempts_per_round,
         "total_points": 0,
         "round_history": [{"number": i+1, "abbrev": "...", "best_guess": "...", "score": "..."} for i in range(rounds)],
