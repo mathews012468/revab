@@ -4,3 +4,7 @@ In words.txt:
 3. Eliminated cadiz (city, shouldn't be a word)
 4. Eliminated milwaukee
 5. Added innie
+6. Deleted entr'acte and entr'actes (don't want to allow non-letter characters)
+7. Eliminated façadism. Architectural term that doesn't show up in Merriam Webster, and I'm trying to eliminate letters outside the standard 26 in English.
+8. Eliminated provençal for the same reason as 7
+9. Changed all é to e and ï to i
