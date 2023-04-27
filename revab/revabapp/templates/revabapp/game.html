@@ -61,14 +61,24 @@
           <span class="revab-letter">{{ letter }}</span>
         {% endfor %}
       </div>
-      <div id="guess-input">
+      <form id="guess-input" method="post">
+        {% csrf_token %}
         <div class="guess-input-row">
+          <div class="hidden">
+            <input name="rounds" value="{{ rounds }}">
+            <input name="abbrev" value="{{ abbrev }}">
+            <input name="attempts_per_round" value="{{ attempts_per_round}}">
+            <input name="attempt_number" value="{{ attempt_number }}">
+            <input name="total_points" value="{{ total_points }}">
+            <input name="round_history" value="{{ round_history }}">
+            <input name="guess_history" value="{{ guess_history }}">
+          </div>
           <input type="text" placeholder="Guess" id="revab-guess">
-          <button>Guess</button>
+          <input type="submit" name="submitbutton" value="Guess">
         </div>
         <div>or</div>
-        <button>No revab possible</button>
-      </div>
+        <input type="submit" name="submitbutton" value="No revab possible">
+      </form>
     </section>
     <hr />
     <section id="third-row">
