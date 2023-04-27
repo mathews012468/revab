@@ -117,14 +117,14 @@ def _check_user_guess(abbrev, guess, words):
     return GuessOutcome.REVAB_BUT_NOT_BEST, max(user_points, 3)
 
 
-def _generate_abbrev(abbrev_length=3):
+def generate_abbrev(abbrev_length=3):
     """
     Generate abbreviation for the user to guess.
 
     abbrev_length: int
     return: str
     """
-    letters = "abcdefghijklmnopqrstuvwxyz"
+    letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     return "".join([random.choice(letters) for _ in range(abbrev_length)])
 
 
@@ -143,7 +143,7 @@ def play_game(words, rounds=5, abbrev_length=3, tries_per_round=3):
     #play certain number of rounds
     for _ in range(rounds):
         #generate abbrev
-        abbrev = _generate_abbrev(abbrev_length)
+        abbrev = generate_abbrev(abbrev_length)
 
         #points in a round is the max of the user's guesses
         round_points = 0
