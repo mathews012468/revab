@@ -61,7 +61,7 @@ def _shortest_word_for_abbreviation(abbrev, words):
     return min(revabs, key=len, default="")
 
 
-def _check_user_guess(abbrev, guess, words):
+def check_user_guess(abbrev, guess, words):
     """
     Determines the outcome of a user guess.
     Return a 2-tuple of a GuessOutcome and number of points earned on the guess.
@@ -149,7 +149,7 @@ def play_game(words, rounds=5, abbrev_length=3, tries_per_round=3):
         round_points = 0
         for _ in range(tries_per_round):
             user_guess = input(f"Enter the shortest revab for {abbrev}, or type . if you think none exist: ")
-            outcome, points_on_guess = _check_user_guess(abbrev, user_guess, words)
+            outcome, points_on_guess = check_user_guess(abbrev, user_guess, words)
             round_points = max(round_points, points_on_guess)
 
             if outcome == GuessOutcome.BEST_WORD:
