@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from revabapp.src.revab import generate_abbrev
+from revabapp.src.revab import generate_abbrev, check_user_guess, GuessOutcome
+import re
+import json
 
 # Create your views here.
 
@@ -8,20 +10,155 @@ def index(request):
     context = {}
     return render(request, "revabapp/index.html", context)
 
+def start_context(rounds, attempts_per_round, abbrev_length):
+    """
+    Return context dictionary for game page at the start of the game.
+    This dictionary is meant to be plugged into the render function
+    """
+    return {
+        "rounds": rounds,
+        "abbrev": generate_abbrev(abbrev_length),
+        "round_number": 1,
+        "attempts_per_round": attempts_per_round,
+        "total_points": 0,
+        "round_history": [{"number": i+1, "abbrev": "...", "best_guess": "...", "score": "..."} for i in range(rounds)],
+        "guess_history": [{"number": i+1, "guess": "...", "result": "...", "score": "..."} for i in range(attempts_per_round)]
+    }
+
+def best_guess(guess_history):
+    best_score = -1
+    best_guess = ""
+    for guess in guess_history:
+        if guess["score"] == "...":
+            continue
+        if guess["score"] > best_score:
+            best_score = guess["score"]
+            best_guess = guess["guess"]
+    return best_guess
+
 def game(request):
-    #add input screening
-    rounds = int(request.POST.get("rounds", 5))
-    abbrev_length = int(request.POST.get("abbrev_length", 3))
-    abbrev = generate_abbrev(abbrev_length)
-    attempts_per_round = int(request.POST.get("attempts_per_round", 3))
+    rounds_pattern = r'^[123456789]{2}$'
+    rounds = request.POST.get("rounds", "5")
+    if not re.match(rounds_pattern, rounds):
+        rounds = "5"
+    rounds = int(rounds)
+
+    attempts_per_round_pattern = r'^[12345]$'
+    attempts_per_round = request.POST.get("attempts_per_round", "3")
+    if not re.match(attempts_per_round_pattern, attempts_per_round):
+        attempts_per_round = "3"
+    attempts_per_round = int(attempts_per_round)
+
+    #if abbrev_length is provided, this must be coming from the 
+    # home page so we start a new game
+    abbrev_length_pattern = r'^[34]$'
+    abbrev_length = request.POST.get("abbrev_length")
+    if abbrev_length is not None and re.match(abbrev_length_pattern, abbrev_length):
+        abbrev_length = int(abbrev_length)
+        context = start_context(rounds, attempts_per_round, abbrev_length)
+        return render(request, "revabapp/game.html", context)
+    abbrev_length = 3
+
+    #if abbrev doesn't exist or isn't three or four letters, restart game
+    abbrev_pattern = r'^[a-zA-Z]{3,4}$'
+    abbrev = request.POST.get("abbrev")
+    if abbrev is None or not re.match(abbrev_pattern, abbrev):
+        abbrev_length = 3
+        context = start_context(rounds, attempts_per_round, abbrev_length)
+        return render(request, "revabapp/game.html", context)
+
+    guess_pattern = r'^[a-zA-Z]*$'
+    user_guess = request.POST.get("guess")
+    if user_guess is None or not re.match(guess_pattern, user_guess):
+        user_guess = ""
+
+    with open("words.txt") as f:
+        words = {line.strip() for line in f}
+    outcome, score = check_user_guess(abbrev, user_guess, words)
+
+    guess_history = request.POST.get("guess_history", "[]")
+    guess_history = guess_history.replace("\'", "\"")
+    try:
+        guess_history = json.loads(guess_history)
+    except json.JSONDecodeError:
+        #might be good to have some more involved input validation as to the exact format
+        guess_history = [{"number": i+1, "guess": "...", "result": "...", "score": "..."} for i in range(attempts_per_round - 1)]
+    
+    #start on final attempt
+    attempt_number = attempts_per_round
+    for guess in guess_history:
+        #if no record of guess exists, then that attempt hasn't happened
+        if guess["guess"] == "...":
+            attempt_number = guess["number"]
+            break
+    
+    round_score = 0
+    for guess in guess_history:
+        if guess["score"] == "...":
+            break
+        if guess["score"] > round_score:
+            round_score = guess["score"]
+    round_score = max(round_score, score)
+
+    round_history = request.POST.get("round_history", "[]")
+    round_history = round_history.replace("\'", "\"")
+    try:
+        round_history = json.loads(round_history)
+    except json.JSONDecodeError:
+        #might be good to have some more involved input validation as to the exact format
+        round_history = [{"number": i+1, "abbrev": "...", "best_guess": "...", "score": "..."} for i in range(rounds)]
+    
+    round_number = 1
+    for round in round_history:
+        if round["abbrev"] == "...":
+            round_number = round["number"]
+            break
+    
+    if outcome == GuessOutcome.BEST_WORD:
+        guess_history[attempt_number - 1] = {"number": attempt_number, "guess": user_guess, "result": "Best revab", "score": score}
+        #this is my signal that the round is over later on
+        attempt_number = attempts_per_round
+    elif outcome == GuessOutcome.NONE_IS_CORRECT:
+        guess_history[attempt_number - 1] = {"number": attempt_number, "guess": user_guess, "result": "Best revab", "score": score}
+        #this is my signal that the round is over later on
+        attempt_number = attempts_per_round
+    elif outcome == GuessOutcome.REVAB_BUT_NOT_BEST:
+        guess_history[attempt_number - 1] = {"number": attempt_number, "guess": user_guess, "result": "Revab but not best", "score": score}
+    elif outcome == GuessOutcome.NOT_REVAB:
+        guess_history[attempt_number - 1] = {"number": attempt_number, "guess": user_guess, "result": "Not revab", "score": score}
+    elif outcome == GuessOutcome.INVALID_WORD:
+        guess_history[attempt_number - 1] = {"number": attempt_number, "guess": user_guess, "result": "Not a valid word", "score": score}
+
+    total_points_pattern = r'^\d{1,3}$'
+    total_points = request.POST.get("total_points", "0")
+    if not re.match(total_points_pattern, total_points):
+        total_points = "0"
+    total_points = int(total_points)
+
+    if attempt_number == attempts_per_round:
+        #update round history
+        #generate abbrev
+        #update total points
+        #reset guess history
+        #update round number
+        round_history[round_number - 1] = {"number": round_number, "abbrev": abbrev, "best_guess": best_guess(guess_history), "score": round_score}
+        abbrev = generate_abbrev(abbrev_length)
+        total_points += round_score
+        guess_history = [{"number": i+1, "guess": "...", "result": "...", "score": "..."} for i in range(attempts_per_round)]
+        round_number += 1
+
+    #if game is over, move to results page
+    if round_number > rounds:
+        context = {"total_points": total_points}
+        return render(request, "revabapp/results.html", context)
 
     context = {
         "rounds": rounds,
         "abbrev": abbrev,
-        "attempt_number": 1,
+        "round_number": round_number,
         "attempts_per_round": attempts_per_round,
-        "total_points": 0,
-        "round_history": [{"number": i+1, "abbrev": "...", "best_guess": "...", "score": "..."} for i in range(rounds)],
-        "guess_history": [{"number": i+1, "guess": "...", "result": "...", "score": "..."} for i in range(attempts_per_round - 1)]
+        "total_points": total_points,
+        "round_history": round_history,
+        "guess_history": guess_history
     }
     return render(request, "revabapp/game.html", context)
