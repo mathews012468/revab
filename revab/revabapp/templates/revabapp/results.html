@@ -27,5 +27,26 @@
   </header>
   <main>
     <div> Total points: {{ total_points }} </div>
+    <div id="round-history">
+      <table>
+        <thead>
+          <th></th>
+          <th>Abbreviation</th>
+          <th>Your best guess</th>
+          <th>Score</th>
+        </thead>
+        <tbody>
+          {% for round in round_history %}
+            <tr>
+              <td>{{ round.number }}</td>
+              <td>{{ round.abbrev }}</td>
+              <td>{{ round.best_guess }}</td>
+              <td>{{ round.score }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
   </main>
 </body>
