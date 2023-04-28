@@ -9,3 +9,4 @@
 9. Click back to home page from game page
 10. Font
 11. Color scheme
+12. Need better input validation for guess and round history, make sure if they don't look the way I expect the website doesn't explode
