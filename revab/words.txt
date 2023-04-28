@@ -41489,6 +41489,7 @@ kuwait
 kuwaiti
 kuwaitis
 kwai
+kwanzaa
 kwashiorkor
 kwh
 kwon
@@ -53555,6 +53556,8 @@ paws
 pax
 pay
 payable
+payday
+paydays
 payee
 payees
 payer
