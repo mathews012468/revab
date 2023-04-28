@@ -67,14 +67,18 @@ def game(request):
         context = start_context(rounds, attempts_per_round, abbrev_length)
         return render(request, "revabapp/game.html", context)
 
-    guess_pattern = r'^[a-zA-Z]*$'
+    guess_pattern = r'^[a-zA-Z]+$'
     user_guess = request.POST.get("guess")
     if user_guess is None or not re.match(guess_pattern, user_guess):
-        user_guess = ""
+        user_guess = "No revabs exist"
 
     with open("words.txt") as f:
         words = {line.strip() for line in f}
-    outcome, score = check_user_guess(abbrev, user_guess, words)
+    guess_type = request.POST.get('submitbutton')
+    if guess_type == "Guess":
+        outcome, score = check_user_guess(abbrev, user_guess, words)
+    else:
+        outcome, score = check_user_guess(abbrev, ".", words)
 
     guess_history = request.POST.get("guess_history", "[]")
     guess_history = guess_history.replace("\'", "\"")
@@ -119,11 +123,13 @@ def game(request):
         #this is my signal that the round is over later on
         attempt_number = attempts_per_round
     elif outcome == GuessOutcome.NONE_IS_CORRECT:
-        guess_history[attempt_number - 1] = {"number": attempt_number, "guess": user_guess, "result": "Best revab", "score": score}
+        guess_history[attempt_number - 1] = {"number": attempt_number, "guess": user_guess, "result": "No revabs exist", "score": score}
         #this is my signal that the round is over later on
         attempt_number = attempts_per_round
     elif outcome == GuessOutcome.REVAB_BUT_NOT_BEST:
-        guess_history[attempt_number - 1] = {"number": attempt_number, "guess": user_guess, "result": "Revab but not best", "score": score}
+        guess_history[attempt_number - 1] = {"number": attempt_number, "guess": user_guess, "result": "At least one revab exists", "score": score}
+    elif outcome == GuessOutcome.NONE_IS_INCORRECT:
+        guess_history[attempt_number - 1] = {"number": attempt_number, "guess": user_guess, "result": "No revabs is ", "score": score}
     elif outcome == GuessOutcome.NOT_REVAB:
         guess_history[attempt_number - 1] = {"number": attempt_number, "guess": user_guess, "result": "Not revab", "score": score}
     elif outcome == GuessOutcome.INVALID_WORD:
@@ -149,7 +155,10 @@ def game(request):
 
     #if game is over, move to results page
     if round_number > rounds:
-        context = {"total_points": total_points}
+        context = {
+            "total_points": total_points,
+            "round_history": round_history,
+        }
         return render(request, "revabapp/results.html", context)
 
     context = {
