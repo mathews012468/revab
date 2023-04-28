@@ -6125,7 +6125,6 @@ bazaar
 bazaars
 bazooka
 bazookas
-bbc
 bc
 be
 beach
@@ -7931,8 +7930,6 @@ blustering
 blusters
 blustery
 blyth
-bma
-bmx
 bo
 boa
 boar
@@ -9308,8 +9305,6 @@ bryan
 bryant
 bryophyte
 bryophytes
-bsc
-bst
 bt
 btu
 bubble
@@ -13467,7 +13462,6 @@ clydebank
 clydesdale
 clypei
 cm
-cmg
 co
 coach
 coached
@@ -17940,7 +17934,6 @@ cutworm
 cutworms
 cvos
 cwmbran
-cwt
 cy
 cyan
 cyanamid
@@ -18400,7 +18393,6 @@ dbe
 dbes
 dcvos
 ddss
-ddt
 de
 deacon
 deaconess
@@ -20599,12 +20591,6 @@ decolletage
 decollete
 detente
 detentes
-dfc
-dfm
-dhabi
-dhahran
-dhaka
-dhss
 diabetes
 diabetic
 diabetics
@@ -23257,8 +23243,6 @@ drying
 dryings
 dryly
 dryness
-dsc
-dsm
 dso
 dsos
 du
@@ -29178,7 +29162,6 @@ flowery
 flowing
 flown
 flows
-flp
 flu
 flub
 flubbed
@@ -30456,7 +30439,6 @@ frowziest
 frowzy
 froze
 frozen
-frs
 fructified
 fructifies
 fructify
@@ -31307,7 +31289,6 @@ gazunders
 gb
 gbe
 gc
-gcb
 gce
 gcmg
 gcse
@@ -32128,7 +32109,6 @@ glyndebourne
 glyph
 glyphs
 gm
-gmt
 gnarl
 gnarled
 gnarling
@@ -36191,7 +36171,6 @@ huxley
 huxtable
 huzzah
 huzzahs
-hwy
 hyacinth
 hyacinths
 hyaline
@@ -40885,7 +40864,6 @@ kbyte
 kbytes
 kc
 kcal
-kcb
 kcmg
 keats
 kebab
@@ -41449,7 +41427,6 @@ kosher
 koshered
 koshers
 kowtow
-kph
 kr
 kraal
 kraals
@@ -41493,7 +41470,6 @@ kuwaitis
 kwai
 kwanzaa
 kwashiorkor
-kwh
 kwon
 kyle
 kyleakin
@@ -43243,24 +43219,6 @@ lizzie
 ljubljana
 llama
 llamas
-llanaber
-llanberis
-llandrindod
-llandudno
-llanelli
-llanelltyd
-llangollen
-llangurig
-llanidloes
-llanrhystyd
-llanrwst
-llanstephan
-llanwrtyd
-llb
-lld
-lleyn
-lloyd
-lloyds
 lm
 lo
 load
@@ -43759,7 +43717,6 @@ lozenges
 lp
 lrams
 lrun
-ltd
 luanda
 luau
 luaus
@@ -45470,7 +45427,6 @@ mcnaughton
 mcneil
 mcpherson
 md
-mdv
 me
 mead
 meadow
@@ -48202,11 +48158,9 @@ mozambique
 mozart
 mozzarella
 mp
-mps
 mr
 mrs
 ms
-msc
 mu
 much
 muchness
@@ -49584,7 +49538,6 @@ nixes
 nixing
 nixon
 nne
-nnw
 no
 noah
 nob
@@ -54642,7 +54595,6 @@ phase
 phased
 phases
 phasing
-phd
 pheasant
 pheasants
 phelps
@@ -55619,7 +55571,6 @@ playwright
 playwrights
 plaza
 plazas
-plc
 plea
 plead
 pleaded
@@ -56678,7 +56629,6 @@ powys
 pox
 poxes
 ppos
-pps
 practicability
 practicable
 practicably
@@ -58942,7 +58892,6 @@ qc
 qdos
 qed
 ql
-qls
 qmon
 qom
 qpac
@@ -63983,7 +63932,6 @@ royce
 royston
 royton
 rspca
-rtf
 ruanda
 ruat
 rub
@@ -68043,7 +67991,6 @@ skivers
 skives
 skiving
 skivvies
-skr
 skua
 skuas
 skulduggery
@@ -70446,9 +70393,7 @@ squishing
 squishy
 sr
 sri
-srn
 sse
-ssw
 st
 stab
 stabbed
@@ -70794,7 +70739,6 @@ stay
 stayed
 staying
 stays
-std
 stead
 steadfast
 steadfastly
@@ -75519,7 +75463,6 @@ titus
 tiverton
 tizzies
 tizzy
-tnt
 to
 toad
 toadfish
@@ -83201,7 +83144,6 @@ wizen
 wizened
 wizening
 wizens
-wnw
 wo
 woad
 wobble
@@ -83639,7 +83581,6 @@ wry
 wryer
 wryest
 wryly
-wsw
 wyatt
 wycombe
 wye
@@ -83686,11 +83627,9 @@ xxii
 xxiii
 xxiv
 xxix
-xxv
 xxvi
 xxvii
 xxviii
-xxx
 xylem
 xylography
 xylophone
