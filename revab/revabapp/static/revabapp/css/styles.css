@@ -21,8 +21,3 @@ h1 {
     height: 32px;
     margin-left: 10px;
 }
-
-.hidden {
-    position: absolute;
-    visibility: hidden;
-}

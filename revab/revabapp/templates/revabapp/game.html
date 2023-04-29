@@ -64,15 +64,13 @@
       <form id="guess-input" method="post">
         {% csrf_token %}
         <div class="guess-input-row">
-          <div class="hidden">
-            <input name="rounds" value="{{ rounds }}">
-            <input name="abbrev" value="{{ abbrev }}">
-            <input name="attempts_per_round" value="{{ attempts_per_round}}">
-            <input name="round_number" value="{{ round_number }}">
-            <input name="total_points" value="{{ total_points }}">
-            <input name="round_history" value="{{ round_history }}">
-            <input name="guess_history" value="{{ guess_history }}">
-          </div>
+          <input type="hidden" name="rounds" value="{{ rounds }}">
+          <input type="hidden" name="abbrev" value="{{ abbrev }}">
+          <input type="hidden" name="attempts_per_round" value="{{ attempts_per_round}}">
+          <input type="hidden" name="round_number" value="{{ round_number }}">
+          <input type="hidden" name="total_points" value="{{ total_points }}">
+          <input type="hidden" name="round_history" value="{{ round_history }}">
+          <input type="hidden" name="guess_history" value="{{ guess_history }}">
           <input type="text" name="guess" placeholder="Guess" id="revab-guess">
           <input type="submit" name="submitbutton" value="Guess">
         </div>

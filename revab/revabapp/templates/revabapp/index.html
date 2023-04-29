@@ -31,11 +31,9 @@
           <!-- https://stackoverflow.com/a/12174091, 
             csrf token necessary for post requests in django according to this stack overflow answer -->
           {% csrf_token %}
-          <div class="hidden">
-            <input name="rounds" value="5">
-            <input name="abbrev_length" value="3">
-            <input name="attempts_per_round" value="3">
-          </div>
+          <input type="hidden" name="rounds" value="5">
+          <input type="hidden" name="abbrev_length" value="3">
+          <input type="hidden" name="attempts_per_round" value="3">
           <input type="submit" value="Start Game" id="start-button" >
           <button id="settings">
             <img src="{% static 'revabapp/img/settings.png' %}" alt="settings">
