@@ -127,9 +127,9 @@ def game(request):
         #this is my signal that the round is over later on
         attempt_number = attempts_per_round
     elif outcome == GuessOutcome.REVAB_BUT_NOT_BEST:
-        guess_history[attempt_number - 1] = {"number": attempt_number, "guess": user_guess, "result": "At least one revab exists", "score": score}
+        guess_history[attempt_number - 1] = {"number": attempt_number, "guess": user_guess, "result": "Not the shortest revab", "score": score}
     elif outcome == GuessOutcome.NONE_IS_INCORRECT:
-        guess_history[attempt_number - 1] = {"number": attempt_number, "guess": user_guess, "result": "No revabs is ", "score": score}
+        guess_history[attempt_number - 1] = {"number": attempt_number, "guess": user_guess, "result": "At least one revab exists", "score": score}
     elif outcome == GuessOutcome.NOT_REVAB:
         guess_history[attempt_number - 1] = {"number": attempt_number, "guess": user_guess, "result": "Not revab", "score": score}
     elif outcome == GuessOutcome.INVALID_WORD:
