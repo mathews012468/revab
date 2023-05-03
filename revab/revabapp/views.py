@@ -7,8 +7,33 @@ import json
 # Create your views here.
 
 def index(request):
-    context = {}
+    rounds_pattern = r'^[123456789]{1,2}$'
+    rounds = request.POST.get("rounds", "5")
+    if not re.match(rounds_pattern, rounds):
+        rounds = "5"
+    rounds = int(rounds)
+
+    attempts_per_round_pattern = r'^[12345]$'
+    attempts_per_round = request.POST.get("attempts_per_round", "3")
+    if not re.match(attempts_per_round_pattern, attempts_per_round):
+        attempts_per_round = "3"
+    attempts_per_round = int(attempts_per_round)
+
+    abbrev_length_pattern = r'^[34]$'
+    abbrev_length = request.POST.get("abbrev_length", "3")
+    if not re.match(abbrev_length_pattern, abbrev_length):
+        abbrev_length = "3"
+    abbrev_length = int(abbrev_length)
+
+    context = {
+        "rounds": rounds,
+        "attempts_per_round": attempts_per_round,
+        "abbrev_length": abbrev_length
+    }
     return render(request, "revabapp/index.html", context)
+
+def settings(request):
+    return render(request, "revabapp/settings.html")
 
 def start_context(rounds, attempts_per_round, abbrev_length):
     """
@@ -37,7 +62,7 @@ def best_guess(guess_history):
     return best_guess
 
 def game(request):
-    rounds_pattern = r'^[123456789]{2}$'
+    rounds_pattern = r'^[123456789]{1,2}$'
     rounds = request.POST.get("rounds", "5")
     if not re.match(rounds_pattern, rounds):
         rounds = "5"
@@ -66,6 +91,7 @@ def game(request):
         abbrev_length = 3
         context = start_context(rounds, attempts_per_round, abbrev_length)
         return render(request, "revabapp/game.html", context)
+    abbrev_length = len(abbrev)
 
     guess_pattern = r'^[a-zA-Z]+$'
     user_guess = request.POST.get("guess")

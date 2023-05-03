@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="{% static 'revabapp/css/styles.css' %}">
-    <link type="text/css" rel="stylesheet" href="{% static 'revabapp/css/start-page.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'revabapp/css/settings-page.css' %}">
     <meta name="viewport" content="width=device-width,initial-scale=1">
   </head>
   <body>
@@ -27,17 +27,26 @@
     </header>
     <main>
       <div id="wrapper">
-        <form action="/game" method="post" id="start-row">
+        <form action="/" method="post" id="start-row">
           <!-- https://stackoverflow.com/a/12174091, 
             csrf token necessary for post requests in django according to this stack overflow answer -->
           {% csrf_token %}
-          <input type="hidden" name="rounds" value="{{ rounds }}">
-          <input type="hidden" name="abbrev_length" value="{{ abbrev_length }}">
-          <input type="hidden" name="attempts_per_round" value="{{ attempts_per_round }}">
-          <input type="submit" value="Start Game" id="start-button" >
-          <a href="/settings" id="settings">
-            <img src="{% static 'revabapp/img/settings.png' %}" alt="settings">
-          </a>
+          <div>
+            <label for="rounds">Rounds</label>
+            <input type="number" name="rounds" min="1" max="10" value="5">
+          </div>
+          <div>
+            <label for="abbrev_length">Abbreviation length</label>
+            <input type="number" name="abbrev_length" min="3" max="4" value="3">
+          </div>
+          <div>
+            <label for="attempts_per_round">Attempts per round</label>
+            <input type="number" name="attempts_per_round" min="1" max="5" value="3">
+          </div>
+          <div>
+            <input type="submit" value="Save settings" id="save" >
+            <input type="submit" value="Back to defaults" id="defaults">
+          </div>
         </form>
       </div>
     </main>
