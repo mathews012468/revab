@@ -41,6 +41,9 @@ def index(request):
 def settings(request):
     return render(request, "revabapp/settings.html")
 
+def help_page(request):
+    return render(request, "revabapp/help.html")
+
 def start_context(rounds, attempts_per_round, abbrev_length):
     """
     Return context dictionary for game page at the start of the game.

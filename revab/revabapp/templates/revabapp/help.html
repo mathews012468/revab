@@ -1,0 +1,66 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Revab</title>
+  <meta name="description" content="Find the shortest reverse abbreviation." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="{% static 'revabapp/css/styles.css' %}">
+  <link type="text/css" rel="stylesheet" href="{% static 'revabapp/css/help-page.css' %}">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+
+<body>
+  <header>
+    <h1><a href="/">Revab</a></h1>
+    <div class="icons">
+      <button>
+        <img src="{% static 'revabapp/img/question_mark.png' %}" alt="?">
+      </button>
+      <button>
+        <img src="{% static 'revabapp/img/stats.png' %}" alt="stats">
+      </button>
+    </div>
+  </header>
+  <main>
+    <h2>Help</h2>
+    <p>REVAB, or REVerse ABbreviation, is a word game that asks you to find the shortest revab of an abbreviation, that is, the shortest word where the letters in the abbreviation appear in the correct order.</p>
+    <p>The shortest revab gets 10 points, the second-shortest gets 9 points, the third-shortest get 8 points, and so on. A valid revab will always get at least 3 points.</p>
+    <p>Not all abbreviations have revabs. Correctly identifying that no revabs exist gets 10 points.</p>
+    <h3>Examples</h3>
+    <div id="revab">
+      <span class="revab-letter">I</span>
+      <span class="revab-letter">E</span>
+      <span class="revab-letter">G</span>
+    </div>
+    <p>'privilege' is a revab of 'ieg', but it is not the shortest. 'privilege' gets 6 points because it is the fifth-shortest revab. The shortest revab is 'liege', which would get 10 points.</p>
+    <p>'sleigh' is not a revab of 'ieg' because in 'sleigh', 'e' appears before 'i'.</p>
+    <div id="revab">
+      <span class="revab-letter">B</span>
+      <span class="revab-letter">B</span>
+      <span class="revab-letter">T</span>
+    </div>
+    <p>'rabbit' is a revab of 'bbt' but not the shortest. 'rabbit' gets 9 points because it is the second-shortest revab. The shortest revab is 'abbot', which would get 10 points.</p>
+    <p>'inhabitable' is not a revab of 'bbt' because in 'inhabitable', 't' appears before the second 'b'.</p>
+    <div id="revab">
+      <span class="revab-letter">I</span>
+      <span class="revab-letter">L</span>
+      <span class="revab-letter">A</span>
+    </div>
+    <p>'island' is a revab of 'ila', but not the shortest. 'island' gets 8 points because it is the third-shortest revab. The shortest revab is 'ilea', which would get 10 points.</p>
+    <p>'lair' is not a revab of 'ila' because in 'lair', 'i' appears after 'l' and 'a'.</p>
+    <div id="revab">
+      <span class="revab-letter">V</span>
+      <span class="revab-letter">Z</span>
+      <span class="revab-letter">K</span>
+    </div>
+    <p>There are no revabs of 'vzk'.</p>
+  </main>
+</body>
+
+</html>
