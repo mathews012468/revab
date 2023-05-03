@@ -25,6 +25,12 @@ def index(request):
         abbrev_length = "3"
     abbrev_length = int(abbrev_length)
 
+    save_or_clear = request.POST.get("settings", "default")
+    if "default" in save_or_clear:
+        abbrev_length = 3
+        attempts_per_round = 3
+        rounds = 5
+
     context = {
         "rounds": rounds,
         "attempts_per_round": attempts_per_round,
