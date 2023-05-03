@@ -7,16 +7,6 @@ hr {
     padding: 0;
 }
 
-.revab-letter {
-    display: inline-block;
-    font-size: 24px;
-    font-weight: bold;
-    color: #ffffff;
-    background-color: #000000;
-    padding: 10px 20px;
-    border-radius: 5px;
-}
-
 #first-row {
     display: flex;
     justify-content: center;
