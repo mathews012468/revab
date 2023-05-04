@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from revabapp.src.revab import generate_abbrev, check_user_guess, GuessOutcome
+from revabapp.src.validate import validate_round_history
 import re
 import json
 
@@ -158,6 +159,12 @@ def game(request):
         #might be good to have some more involved input validation as to the exact format
         guess_history = [{"number": i+1, "guess": "...", "result": "...", "score": "..."} for i in range(attempts_per_round - 1)]
 
+    total_points_pattern = r'^\d{1,3}$'
+    total_points = request.POST.get("total_points", "0")
+    if not re.match(total_points_pattern, total_points):
+        total_points = "0"
+    total_points = int(total_points)
+
     round_history = request.POST.get("round_history", "[]")
     round_history = round_history.replace("\'", "\"")
     try:
@@ -165,12 +172,11 @@ def game(request):
     except json.JSONDecodeError:
         #might be good to have some more involved input validation as to the exact format
         round_history = [{"number": i+1, "abbrev": "...", "best_guess": "...", "score": "..."} for i in range(rounds)]
-
-    total_points_pattern = r'^\d{1,3}$'
-    total_points = request.POST.get("total_points", "0")
-    if not re.match(total_points_pattern, total_points):
-        total_points = "0"
-    total_points = int(total_points)
+        total_points = 0
+    if not validate_round_history(round_history, rounds):
+        print("something was wrong with the round history")
+        round_history = [{"number": i+1, "abbrev": "...", "best_guess": "...", "score": "..."} for i in range(rounds)]
+        total_points = 0
 
     round_number = 1
     for round in round_history:
