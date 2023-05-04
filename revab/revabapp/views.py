@@ -39,7 +39,30 @@ def index(request):
     return render(request, "revabapp/index.html", context)
 
 def settings(request):
-    return render(request, "revabapp/settings.html")
+    rounds_pattern = r'^[123456789]{1,2}$'
+    rounds = request.POST.get("rounds", "5")
+    if not re.match(rounds_pattern, rounds):
+        rounds = "5"
+    rounds = int(rounds)
+
+    attempts_per_round_pattern = r'^[12345]$'
+    attempts_per_round = request.POST.get("attempts_per_round", "3")
+    if not re.match(attempts_per_round_pattern, attempts_per_round):
+        attempts_per_round = "3"
+    attempts_per_round = int(attempts_per_round)
+
+    abbrev_length_pattern = r'^[34]$'
+    abbrev_length = request.POST.get("abbrev_length", "3")
+    if not re.match(abbrev_length_pattern, abbrev_length):
+        abbrev_length = "3"
+    abbrev_length = int(abbrev_length)
+    
+    context = {
+        "rounds": rounds,
+        "attempts_per_round": attempts_per_round,
+        "abbrev_length": abbrev_length
+    }
+    return render(request, "revabapp/settings.html", context)
 
 def help_page(request):
     context = {

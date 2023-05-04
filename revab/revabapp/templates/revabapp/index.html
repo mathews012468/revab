@@ -39,18 +39,26 @@
     </header>
     <main>
       <div id="wrapper">
-        <form action="/game" method="post" id="start-row">
-          <!-- https://stackoverflow.com/a/12174091, 
-            csrf token necessary for post requests in django according to this stack overflow answer -->
-          {% csrf_token %}
-          <input type="hidden" name="rounds" value="{{ rounds }}">
-          <input type="hidden" name="abbrev_length" value="{{ abbrev_length }}">
-          <input type="hidden" name="attempts_per_round" value="{{ attempts_per_round }}">
-          <input type="submit" value="Start Game" id="start-button" >
-          <a href="/settings" id="settings">
-            <img src="{% static 'revabapp/img/settings.png' %}" alt="settings">
-          </a>
-        </form>
+        <div id="start-row">
+          <form action="/game" id="game-form" method="post">
+            <!-- https://stackoverflow.com/a/12174091, 
+              csrf token necessary for post requests in django according to this stack overflow answer -->
+            {% csrf_token %}
+            <input type="hidden" name="rounds" value="{{ rounds }}">
+            <input type="hidden" name="abbrev_length" value="{{ abbrev_length }}">
+            <input type="hidden" name="attempts_per_round" value="{{ attempts_per_round }}">
+            <input type="submit" id="start-button" value="Start Game"  >
+          </form>
+          <form action="/settings" id="settings-form" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="rounds" value="{{ rounds }}">
+            <input type="hidden" name="abbrev_length" value="{{ abbrev_length }}">
+            <input type="hidden" name="attempts_per_round" value="{{ attempts_per_round }}">
+            <button id="settings">
+              <img src="{% static 'revabapp/img/settings.png' %}" alt="settings">
+            </button>
+          </form>
+        </div>
       </div>
     </main>
   </body>
