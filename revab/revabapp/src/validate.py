@@ -7,6 +7,9 @@ def validate_round_history(round_history, rounds):
     """
     Return True if round_history is in valid format, False otherwise
     """
+    if type(round_history) != list:
+        return False
+    
     #length of round history should be the number of rounds
     if len(round_history) != rounds:
         return False
