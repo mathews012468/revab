@@ -74,7 +74,7 @@ def validate_round_history(round_history, rounds):
         if type(score) != int:
             return False
         
-        _, correct_score = check_user_guess(abbrev, round["best_guess"], words)
+        _, correct_score = check_user_guess(round["abbrev"], round["best_guess"], words)
         if score != correct_score:
             return False
     
