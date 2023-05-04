@@ -1,0 +1,9 @@
+<svg version="1.1"
+     width="100" height="100"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <rect width="100" height="100" fill="#ffd633" />
+
+  <text x="50" y="80" font-size="100" text-anchor="middle" fill="#823038">R</text>
+
+</svg>
