@@ -17,12 +17,19 @@
     <header>
       <h1><a href="/">Revab</a></h1>
       <div class="icons">
-        <button>
-          <img src="{% static 'revabapp/img/question_mark.png' %}" alt="?">
-        </button>
-        <button>
-          <img src="{% static 'revabapp/img/stats.png' %}" alt="stats">
-        </button>
+        <form action="/help" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="rounds" value="{{ rounds }}">
+            <input type="hidden" name="attempts_per_round" value="{{ attempts_per_round }}">
+            <input type="hidden" name="abbrev_length" value="{{ abbrev_length }}">
+            <input type="hidden" name="destination" value="/settings">
+            <button>
+              <img src="{% static 'revabapp/img/question_mark.png' %}" alt="?">
+            </button>
+            <button>
+              <img src="{% static 'revabapp/img/stats.png' %}" alt="stats">
+            </button>
+          </form>
       </div>
     </header>
     <main>
@@ -33,15 +40,15 @@
           {% csrf_token %}
           <div>
             <label for="rounds">Rounds</label>
-            <input type="number" name="rounds" min="1" max="10" value="5">
+            <input type="number" name="rounds" min="1" max="10" value="{{ rounds }}">
           </div>
           <div>
             <label for="abbrev_length">Abbreviation length</label>
-            <input type="number" name="abbrev_length" min="3" max="4" value="3">
+            <input type="number" name="abbrev_length" min="3" max="4" value="{{ abbrev_length }}">
           </div>
           <div>
             <label for="attempts_per_round">Attempts per round</label>
-            <input type="number" name="attempts_per_round" min="1" max="5" value="3">
+            <input type="number" name="attempts_per_round" min="1" max="5" value="{{ attempts_per_round }}">
           </div>
           <div>
             <input type="submit" name="settings" value="Save changes" id="save" >
