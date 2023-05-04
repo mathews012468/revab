@@ -1,0 +1,15 @@
+#first-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#first-row div {
+    flex: 1;
+    margin: 0 10px;
+}
+
+#total-points {
+    text-align: center;
+    font-size: 3em;
+}
