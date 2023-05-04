@@ -76,7 +76,6 @@ def validate_round_history(round_history, rounds):
         
         _, correct_score = check_user_guess(round["abbrev"], round["best_guess"], words)
         if score != correct_score:
-            print("score isn't correct", round["abbrev"], round["best_guess"], score, correct_score)
             return False
     
     return True
@@ -87,14 +86,10 @@ def validate_guess_history(guess_history, attempts_per_round, abbrev):
     """
     if type(guess_history) != list:
         return False
-    
-    print("guess history is a list")
 
     #length of guess history should be the number of allowed guessed per round
     if len(guess_history) != attempts_per_round:
         return False
-    
-    print("guess history is the right length")
 
     #each element in guess history should be a dict with the keys 'number', 'guess', 'result', and 'score'
     for guess in guess_history:
@@ -103,15 +98,11 @@ def validate_guess_history(guess_history, attempts_per_round, abbrev):
         
         if set(guess.keys()) != {"number", "guess", "result", "score"}:
             return False
-        
-    print("each guess is in the right format")
 
     #each number should be one more than the index of its guess
     for index, guess in enumerate(guess_history):
         if guess["number"] != index + 1:
             return False
-
-    print("all guesses have the right number")
 
     #either all or none of 'guess', 'result', and 'score' should be '...'
     #if one guess is all '...', then all of the following guesses should be '...' as well
@@ -131,14 +122,10 @@ def validate_guess_history(guess_history, attempts_per_round, abbrev):
         if EMPTY in guess_info:
             is_future_guess = True
 
-    print("guesses respect empty rules")
-
     #all guesses should be strings
     for guess in guess_history:
         if type(guess["guess"]) != str:
             return False
-        
-    print("all guesses are strings")
         
     #result and score should match what we get from checking the user's guess against the abbrev
     with open("words.txt") as f:
@@ -153,12 +140,8 @@ def validate_guess_history(guess_history, attempts_per_round, abbrev):
             user_guess = "."
         outcome, score = check_user_guess(abbrev, user_guess, words)
         if guess["result"] != outcome.value:
-            print("result doesn't have the right text")
             return False
         if guess["score"] != score:
-            print("score isn't right")
             return False
-    
-    print("all results and scores are good")
 
     return True

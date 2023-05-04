@@ -148,7 +148,6 @@ def game(request):
     try:
         guess_history = json.loads(guess_history)
     except json.JSONDecodeError:
-        #might be good to have some more involved input validation as to the exact format
         guess_history = [{"number": i+1, "guess": "...", "result": "...", "score": "..."} for i in range(attempts_per_round)]
     if not validate_guess_history(guess_history, attempts_per_round, abbrev):
         guess_history = [{"number": i+1, "guess": "...", "result": "...", "score": "..."} for i in range(attempts_per_round)]
@@ -164,7 +163,6 @@ def game(request):
     try:
         round_history = json.loads(round_history)
     except json.JSONDecodeError:
-        #might be good to have some more involved input validation as to the exact format
         round_history = [{"number": i+1, "abbrev": "...", "best_guess": "...", "score": "..."} for i in range(rounds)]
         total_points = 0
     if not validate_round_history(round_history, rounds):
