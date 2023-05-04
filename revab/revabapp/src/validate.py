@@ -76,7 +76,89 @@ def validate_round_history(round_history, rounds):
         
         _, correct_score = check_user_guess(round["abbrev"], round["best_guess"], words)
         if score != correct_score:
+            print("score isn't correct", round["abbrev"], round["best_guess"], score, correct_score)
             return False
     
     return True
         
+def validate_guess_history(guess_history, attempts_per_round, abbrev):
+    """
+    Return True if guess_history is in a valid format, False otherwise
+    """
+    if type(guess_history) != list:
+        return False
+    
+    print("guess history is a list")
+
+    #length of guess history should be the number of allowed guessed per round
+    if len(guess_history) != attempts_per_round:
+        return False
+    
+    print("guess history is the right length")
+
+    #each element in guess history should be a dict with the keys 'number', 'guess', 'result', and 'score'
+    for guess in guess_history:
+        if type(guess) != dict:
+            return False
+        
+        if set(guess.keys()) != {"number", "guess", "result", "score"}:
+            return False
+        
+    print("each guess is in the right format")
+
+    #each number should be one more than the index of its guess
+    for index, guess in enumerate(guess_history):
+        if guess["number"] != index + 1:
+            return False
+
+    print("all guesses have the right number")
+
+    #either all or none of 'guess', 'result', and 'score' should be '...'
+    #if one guess is all '...', then all of the following guesses should be '...' as well
+    is_future_guess = False
+    for guess in guess_history:
+        guess_info = {guess["guess"], guess["result"], guess["score"]}
+
+        #some fields are filled, some fields are empty. This shouldn't happen
+        if EMPTY in guess_info and len(guess_info) > 1:
+            return False
+
+        #this is a guess that comes after an empty one but it is non-empty. This shouldn't happen
+        if is_future_guess and EMPTY not in guess_info:
+            return False
+        
+        #any guess that comes after this one should have all empty fields
+        if EMPTY in guess_info:
+            is_future_guess = True
+
+    print("guesses respect empty rules")
+
+    #all guesses should be strings
+    for guess in guess_history:
+        if type(guess["guess"]) != str:
+            return False
+        
+    print("all guesses are strings")
+        
+    #result and score should match what we get from checking the user's guess against the abbrev
+    with open("words.txt") as f:
+        words = {line.strip() for line in f}
+    for guess in guess_history:
+        user_guess = guess["guess"]
+        if user_guess == EMPTY:
+            continue
+
+        if user_guess == "No revabs exist":
+            #a period tells 'check_user_guess' that the user thinks no revabs exist
+            user_guess = "."
+        outcome, score = check_user_guess(abbrev, user_guess, words)
+        if guess["result"] != outcome.value:
+            print("result doesn't have the right text")
+            return False
+        if guess["score"] != score:
+            print("score isn't right")
+            return False
+    
+    print("all results and scores are good")
+
+    return True

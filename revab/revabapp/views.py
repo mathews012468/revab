@@ -150,6 +150,8 @@ def game(request):
     except json.JSONDecodeError:
         #might be good to have some more involved input validation as to the exact format
         guess_history = [{"number": i+1, "guess": "...", "result": "...", "score": "..."} for i in range(attempts_per_round)]
+    if not validate_guess_history(guess_history, attempts_per_round, abbrev):
+        guess_history = [{"number": i+1, "guess": "...", "result": "...", "score": "..."} for i in range(attempts_per_round)]
 
     total_points_pattern = r'^\d{1,3}$'
     total_points = request.POST.get("total_points", "0")
