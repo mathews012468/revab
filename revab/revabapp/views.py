@@ -174,7 +174,6 @@ def game(request):
         round_history = [{"number": i+1, "abbrev": "...", "best_guess": "...", "score": "..."} for i in range(rounds)]
         total_points = 0
     if not validate_round_history(round_history, rounds):
-        print("something was wrong with the round history")
         round_history = [{"number": i+1, "abbrev": "...", "best_guess": "...", "score": "..."} for i in range(rounds)]
         total_points = 0
 
