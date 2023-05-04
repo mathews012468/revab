@@ -19,12 +19,23 @@
   <header>
     <h1><a href="/">Revab</a></h1>
     <div class="icons">
-      <button>
-        <img src="{% static 'revabapp/img/question_mark.png' %}" alt="?">
-      </button>
-      <button>
-        <img src="{% static 'revabapp/img/stats.png' %}" alt="stats">
-      </button>
+      <form method="post" action="/help">
+        {% csrf_token %}
+        <input type="hidden" name="rounds" value="{{ rounds }}">
+        <input type="hidden" name="attempts_per_round" value="{{ attempts_per_round }}">
+        <input type="hidden" name="abbrev_length" value="{{ abbrev_length }}">
+        <input type="hidden" name="abbrev" value="{{ abbrev }}">
+        <input type="hidden" name="guess_history" value="{{ guess_history }}">
+        <input type="hidden" name="total_points" value="{{ total_points }}">
+        <input type="hidden" name="settings" value="{{ settings }}">
+        <input type="hidden" name="destination" value="/">
+        <button>
+          <img src="{% static 'revabapp/img/question_mark.png' %}" alt="?">
+        </button>
+        <button>
+          <img src="{% static 'revabapp/img/stats.png' %}" alt="stats">
+        </button>
+      </form>
     </div>
   </header>
   <main>
@@ -60,6 +71,17 @@
       <span class="revab-letter">K</span>
     </div>
     <p>There are no revabs of 'vzk'.</p>
+    <form method="post" action="{{ destination }}">
+      {% csrf_token %}
+      <input type="hidden" name="rounds" value="{{ rounds }}">
+      <input type="hidden" name="attempts_per_round" value="{{ attempts_per_round }}">
+      <input type="hidden" name="abbrev_length" value="{{ abbrev_length }}">
+      <input type="hidden" name="abbrev" value="{{ abbrev }}">
+      <input type="hidden" name="guess_history" value="{{ guess_history }}">
+      <input type="hidden" name="total_points" value="{{ total_points }}">
+      <input type="hidden" name="settings" value="{{ settings }}">
+      <input type="submit" value="Back">
+    </form>
   </main>
 </body>
 
