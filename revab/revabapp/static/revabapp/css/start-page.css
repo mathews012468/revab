@@ -37,6 +37,10 @@
     border: none;
 }
 
+#settings:hover {
+    background-color: #ddd;
+}
+
 #settings img {
     width: 100%;
     height: 100%;
