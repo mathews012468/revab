@@ -239,6 +239,9 @@ def game(request):
     #if game is over, move to results page
     if round_number > rounds:
         context = {
+            "rounds": rounds,
+            "attempts_per_round": attempts_per_round,
+            "abbrev_length": abbrev_length,
             "total_points": total_points,
             "round_history": round_history,
         }
