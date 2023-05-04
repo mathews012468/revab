@@ -26,9 +26,10 @@
         <input type="hidden" name="abbrev_length" value="{{ abbrev_length }}">
         <input type="hidden" name="abbrev" value="{{ abbrev }}">
         <input type="hidden" name="guess_history" value="{{ guess_history }}">
+        <input type="hidden" name="round_history" value="{{ round_history }}">
         <input type="hidden" name="total_points" value="{{ total_points }}">
         <input type="hidden" name="settings" value="{{ settings }}">
-        <input type="hidden" name="destination" value="/">
+        <input type="hidden" name="destination" value="{{ destination }}">
         <button>
           <img src="{% static 'revabapp/img/question_mark.png' %}" alt="?">
         </button>
@@ -78,8 +79,10 @@
       <input type="hidden" name="abbrev_length" value="{{ abbrev_length }}">
       <input type="hidden" name="abbrev" value="{{ abbrev }}">
       <input type="hidden" name="guess_history" value="{{ guess_history }}">
+      <input type="hidden" name="round_history" value="{{ round_history }}">
       <input type="hidden" name="total_points" value="{{ total_points }}">
       <input type="hidden" name="settings" value="{{ settings }}">
+      <input type="hidden" name="source" value="help">
       <input type="submit" value="Back">
     </form>
   </main>

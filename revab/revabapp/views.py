@@ -134,7 +134,40 @@ def game(request):
     except json.JSONDecodeError:
         #might be good to have some more involved input validation as to the exact format
         guess_history = [{"number": i+1, "guess": "...", "result": "...", "score": "..."} for i in range(attempts_per_round - 1)]
-    
+
+    round_history = request.POST.get("round_history", "[]")
+    round_history = round_history.replace("\'", "\"")
+    try:
+        round_history = json.loads(round_history)
+    except json.JSONDecodeError:
+        #might be good to have some more involved input validation as to the exact format
+        round_history = [{"number": i+1, "abbrev": "...", "best_guess": "...", "score": "..."} for i in range(rounds)]
+
+    total_points_pattern = r'^\d{1,3}$'
+    total_points = request.POST.get("total_points", "0")
+    if not re.match(total_points_pattern, total_points):
+        total_points = "0"
+    total_points = int(total_points)
+
+    round_number = 1
+    for round in round_history:
+        if round["abbrev"] == "...":
+            round_number = round["number"]
+            break
+
+    #if we come from the help page, just load the page, don't do any computations
+    if request.POST.get("source") == "help":
+        context = {
+            "rounds": rounds,
+            "abbrev": abbrev,
+            "round_number": round_number,
+            "attempts_per_round": attempts_per_round,
+            "total_points": total_points,
+            "round_history": round_history,
+            "guess_history": guess_history
+        }
+        return render(request, "revabapp/game.html", context)
+
     #start on final attempt
     attempt_number = attempts_per_round
     for guess in guess_history:
@@ -150,20 +183,6 @@ def game(request):
         if guess["score"] > round_score:
             round_score = guess["score"]
     round_score = max(round_score, score)
-
-    round_history = request.POST.get("round_history", "[]")
-    round_history = round_history.replace("\'", "\"")
-    try:
-        round_history = json.loads(round_history)
-    except json.JSONDecodeError:
-        #might be good to have some more involved input validation as to the exact format
-        round_history = [{"number": i+1, "abbrev": "...", "best_guess": "...", "score": "..."} for i in range(rounds)]
-    
-    round_number = 1
-    for round in round_history:
-        if round["abbrev"] == "...":
-            round_number = round["number"]
-            break
     
     if outcome == GuessOutcome.BEST_WORD:
         guess_history[attempt_number - 1] = {"number": attempt_number, "guess": user_guess, "result": "Best revab", "score": score}
@@ -181,12 +200,6 @@ def game(request):
         guess_history[attempt_number - 1] = {"number": attempt_number, "guess": user_guess, "result": "Not revab", "score": score}
     elif outcome == GuessOutcome.INVALID_WORD:
         guess_history[attempt_number - 1] = {"number": attempt_number, "guess": user_guess, "result": "Not a valid word", "score": score}
-
-    total_points_pattern = r'^\d{1,3}$'
-    total_points = request.POST.get("total_points", "0")
-    if not re.match(total_points_pattern, total_points):
-        total_points = "0"
-    total_points = int(total_points)
 
     if attempt_number == attempts_per_round:
         #update round history
