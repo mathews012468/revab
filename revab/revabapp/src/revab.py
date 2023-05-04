@@ -2,12 +2,12 @@ import random
 from enum import Enum
 
 class GuessOutcome(Enum):
-    INVALID_WORD = 1 #not in dictionary
-    NOT_REVAB = 2 #valid word, not a revab
-    REVAB_BUT_NOT_BEST = 3
-    BEST_WORD = 4
-    NONE_IS_INCORRECT = 5 #there are revabs, but the user indicated there weren't any
-    NONE_IS_CORRECT = 6 #there are no revabs and the user got this right
+    INVALID_WORD = "Not a valid word" #not in dictionary
+    NOT_REVAB = "Not revab" #valid word, not a revab
+    REVAB_BUT_NOT_BEST = "Not the shortest revab"
+    BEST_WORD = "Best revab"
+    NONE_IS_INCORRECT = "At least one revab exists" #there are revabs, but the user indicated there weren't any
+    NONE_IS_CORRECT = "No revabs exist" #there are no revabs and the user got this right
 
 
 def _is_abbreviation(abbrev, word):

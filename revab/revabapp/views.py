@@ -143,14 +143,6 @@ def game(request):
     if user_guess is None or not re.match(guess_pattern, user_guess):
         user_guess = "No revabs exist"
 
-    with open("words.txt") as f:
-        words = {line.strip() for line in f}
-    guess_type = request.POST.get('submitbutton')
-    if guess_type == "Guess":
-        outcome, score = check_user_guess(abbrev, user_guess, words)
-    else:
-        outcome, score = check_user_guess(abbrev, ".", words)
-
     guess_history = request.POST.get("guess_history", "[]")
     guess_history = guess_history.replace("\'", "\"")
     try:
@@ -203,6 +195,14 @@ def game(request):
         if guess["guess"] == "...":
             attempt_number = guess["number"]
             break
+
+    with open("words.txt") as f:
+        words = {line.strip() for line in f}
+    guess_type = request.POST.get('submitbutton')
+    if guess_type == "Guess":
+        outcome, score = check_user_guess(abbrev, user_guess, words)
+    else:
+        outcome, score = check_user_guess(abbrev, ".", words)
     
     round_score = 0
     for guess in guess_history:
@@ -212,22 +212,10 @@ def game(request):
             round_score = guess["score"]
     round_score = max(round_score, score)
     
-    if outcome == GuessOutcome.BEST_WORD:
-        guess_history[attempt_number - 1] = {"number": attempt_number, "guess": user_guess, "result": "Best revab", "score": score}
+    if outcome == GuessOutcome.BEST_WORD or outcome == GuessOutcome.NONE_IS_CORRECT:
         #this is my signal that the round is over later on
         attempt_number = attempts_per_round
-    elif outcome == GuessOutcome.NONE_IS_CORRECT:
-        guess_history[attempt_number - 1] = {"number": attempt_number, "guess": user_guess, "result": "No revabs exist", "score": score}
-        #this is my signal that the round is over later on
-        attempt_number = attempts_per_round
-    elif outcome == GuessOutcome.REVAB_BUT_NOT_BEST:
-        guess_history[attempt_number - 1] = {"number": attempt_number, "guess": user_guess, "result": "Not the shortest revab", "score": score}
-    elif outcome == GuessOutcome.NONE_IS_INCORRECT:
-        guess_history[attempt_number - 1] = {"number": attempt_number, "guess": user_guess, "result": "At least one revab exists", "score": score}
-    elif outcome == GuessOutcome.NOT_REVAB:
-        guess_history[attempt_number - 1] = {"number": attempt_number, "guess": user_guess, "result": "Not revab", "score": score}
-    elif outcome == GuessOutcome.INVALID_WORD:
-        guess_history[attempt_number - 1] = {"number": attempt_number, "guess": user_guess, "result": "Not a valid word", "score": score}
+    guess_history[attempt_number - 1] = {"number": attempt_number, "guess": user_guess, "result": outcome.value, "score": score}
 
     if attempt_number == attempts_per_round:
         #update round history
