@@ -1,0 +1,13 @@
+#wrapper {
+    margin: 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}

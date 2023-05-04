@@ -39,15 +39,15 @@
             csrf token necessary for post requests in django according to this stack overflow answer -->
           {% csrf_token %}
           <div>
-            <label for="rounds">Rounds</label>
+            <label for="rounds">Rounds:</label>
             <input type="number" name="rounds" min="1" max="10" value="{{ rounds }}">
           </div>
           <div>
-            <label for="abbrev_length">Abbreviation length</label>
+            <label for="abbrev_length">Abbreviation length:</label>
             <input type="number" name="abbrev_length" min="3" max="4" value="{{ abbrev_length }}">
           </div>
           <div>
-            <label for="attempts_per_round">Attempts per round</label>
+            <label for="attempts_per_round">Attempts per round:</label>
             <input type="number" name="attempts_per_round" min="1" max="5" value="{{ attempts_per_round }}">
           </div>
           <div>
