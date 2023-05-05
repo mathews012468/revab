@@ -40,6 +40,13 @@ def validate_abbrev_length(abbrev_length):
     abbrev_length_pattern = r'^[34]$'
     return validate_input(abbrev_length, abbrev_length_pattern)
 
+def validate_abbrev(abbrev):
+    """
+    Return True if abbrev consists of 3 or 4 letters, False otherwise
+    """
+    abbrev_pattern = r'^[a-zA-Z]{3,4}$'
+    return validate_input(abbrev, abbrev_pattern)
+
 def validate_round_history(round_history, rounds):
     """
     Return True if round_history is in valid format, False otherwise

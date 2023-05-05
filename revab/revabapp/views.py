@@ -10,7 +10,8 @@ from revabapp.src.validate import \
     validate_guess_history, \
     validate_rounds, \
     validate_attempts_per_round, \
-    validate_abbrev_length
+    validate_abbrev_length, \
+    validate_abbrev
 import re
 import json
 
@@ -110,10 +111,8 @@ def game(request):
         abbrev_length = "3"
     abbrev_length = int(abbrev_length)
 
-    #if abbrev doesn't exist or isn't three or four letters, restart game
-    abbrev_pattern = r'^[a-zA-Z]{3,4}$'
     abbrev = request.POST.get("abbrev")
-    if abbrev is None or not re.match(abbrev_pattern, abbrev):
+    if not validate_abbrev(abbrev):
         abbrev = generate_abbrev(abbrev_length)
 
     guess_pattern = r'^[a-zA-Z]{1,25}$'
