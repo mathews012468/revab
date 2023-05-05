@@ -19,6 +19,21 @@ def validate_rounds(rounds):
     
     return True
 
+def validate_attempts_per_round(attempts_per_round):
+    """
+    Return True if attempts_per_round is a number from 1 to 5, False otherwise
+    """
+    if attempts_per_round is None:
+        return False
+    
+    if type(attempts_per_round) != str:
+        return False
+    
+    attempts_per_round_pattern = r'^[12345]$'
+    if not re.match(attempts_per_round_pattern, attempts_per_round):
+        return False
+    
+    return False
 
 def validate_round_history(round_history, rounds):
     """

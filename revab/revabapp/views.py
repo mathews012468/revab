@@ -1,7 +1,15 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from revabapp.src.revab import generate_abbrev, check_user_guess, load_words, GuessOutcome
-from revabapp.src.validate import validate_round_history, validate_guess_history, validate_rounds
+from revabapp.src.revab import \
+    generate_abbrev, \
+    check_user_guess, \
+    load_words, \
+    GuessOutcome
+from revabapp.src.validate import \
+    validate_round_history, \
+    validate_guess_history, \
+    validate_rounds, \
+    validate_attempts_per_round
 import re
 import json
 
@@ -13,9 +21,8 @@ def index(request):
         rounds = "5"
     rounds = int(rounds)
 
-    attempts_per_round_pattern = r'^[12345]$'
-    attempts_per_round = request.POST.get("attempts_per_round", "3")
-    if not re.match(attempts_per_round_pattern, attempts_per_round):
+    attempts_per_round = request.POST.get("attempts_per_round")
+    if not validate_attempts_per_round(attempts_per_round):
         attempts_per_round = "3"
     attempts_per_round = int(attempts_per_round)
 
@@ -44,9 +51,8 @@ def settings(request):
         rounds = "5"
     rounds = int(rounds)
 
-    attempts_per_round_pattern = r'^[12345]$'
-    attempts_per_round = request.POST.get("attempts_per_round", "3")
-    if not re.match(attempts_per_round_pattern, attempts_per_round):
+    attempts_per_round = request.POST.get("attempts_per_round")
+    if not validate_attempts_per_round(attempts_per_round):
         attempts_per_round = "3"
     attempts_per_round = int(attempts_per_round)
 
@@ -110,9 +116,8 @@ def game(request):
         rounds = "5"
     rounds = int(rounds)
 
-    attempts_per_round_pattern = r'^[12345]$'
-    attempts_per_round = request.POST.get("attempts_per_round", "3")
-    if not re.match(attempts_per_round_pattern, attempts_per_round):
+    attempts_per_round = request.POST.get("attempts_per_round")
+    if not validate_attempts_per_round(attempts_per_round):
         attempts_per_round = "3"
     attempts_per_round = int(attempts_per_round)
 
