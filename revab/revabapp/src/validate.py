@@ -3,53 +3,42 @@ import re
 
 EMPTY = "..."
 
-def validate_rounds(rounds):
+def validate_input(value, pattern):
     """
-    Return True if rounds is a one or two digit number, False otherwise
+    Return True if value is not None, a str, and if it matches the pattern
+    pattern: raw string that's a regular expression
     """
-    if rounds is None:
+    if value is None:
         return False
     
-    if type(rounds) != str:
+    if type(value) != str:
         return False
     
-    rounds_pattern = r'^[123456789][0123456789]?$'
-    if not re.match(rounds_pattern, rounds):
+    if not re.match(pattern, value):
         return False
     
     return True
 
+def validate_rounds(rounds):
+    """
+    Return True if rounds is a one or two digit number, False otherwise
+    """    
+    rounds_pattern = r'^[123456789][0123456789]?$'
+    return validate_input(rounds, rounds_pattern)
+
 def validate_attempts_per_round(attempts_per_round):
     """
     Return True if attempts_per_round is a number from 1 to 5, False otherwise
-    """
-    if attempts_per_round is None:
-        return False
-    
-    if type(attempts_per_round) != str:
-        return False
-    
+    """    
     attempts_per_round_pattern = r'^[12345]$'
-    if not re.match(attempts_per_round_pattern, attempts_per_round):
-        return False
-    
-    return False
+    return validate_input(attempts_per_round, attempts_per_round_pattern)
 
 def validate_abbrev_length(abbrev_length):
     """
     Return True if abbrev_length is 3 or 4, False otherwise
     """
-    if abbrev_length is None:
-        return False
-    
-    if type(abbrev_length) != str:
-        return False
-    
     abbrev_length_pattern = r'^[34]$'
-    if not re.match(abbrev_length_pattern, abbrev_length):
-        return False
-    
-    return True
+    return validate_input(abbrev_length, abbrev_length_pattern)
 
 def validate_round_history(round_history, rounds):
     """
