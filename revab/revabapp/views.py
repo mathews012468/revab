@@ -8,7 +8,7 @@ import json
 # Create your views here.
 
 def index(request):
-    rounds_pattern = r'^[123456789]{1,2}$'
+    rounds_pattern = r'^[123456789][0123456789]?$'
     rounds = request.POST.get("rounds", "5")
     if not re.match(rounds_pattern, rounds):
         rounds = "5"
@@ -40,7 +40,7 @@ def index(request):
     return render(request, "revabapp/index.html", context)
 
 def settings(request):
-    rounds_pattern = r'^[123456789]{1,2}$'
+    rounds_pattern = r'^[123456789][0123456789]?$'
     rounds = request.POST.get("rounds", "5")
     if not re.match(rounds_pattern, rounds):
         rounds = "5"
@@ -107,7 +107,7 @@ def best_guess(guess_history):
     return best_guess
 
 def game(request):
-    rounds_pattern = r'^[123456789]{1,2}$'
+    rounds_pattern = r'^[123456789][0123456789]?$'
     rounds = request.POST.get("rounds", "5")
     if not re.match(rounds_pattern, rounds):
         rounds = "5"
