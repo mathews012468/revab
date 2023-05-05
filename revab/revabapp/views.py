@@ -9,7 +9,8 @@ from revabapp.src.validate import \
     validate_round_history, \
     validate_guess_history, \
     validate_rounds, \
-    validate_attempts_per_round
+    validate_attempts_per_round, \
+    validate_abbrev_length
 import re
 import json
 
@@ -26,9 +27,8 @@ def index(request):
         attempts_per_round = "3"
     attempts_per_round = int(attempts_per_round)
 
-    abbrev_length_pattern = r'^[34]$'
-    abbrev_length = request.POST.get("abbrev_length", "3")
-    if not re.match(abbrev_length_pattern, abbrev_length):
+    abbrev_length = request.POST.get("abbrev_length")
+    if not validate_abbrev_length(abbrev_length):
         abbrev_length = "3"
     abbrev_length = int(abbrev_length)
 
@@ -56,9 +56,8 @@ def settings(request):
         attempts_per_round = "3"
     attempts_per_round = int(attempts_per_round)
 
-    abbrev_length_pattern = r'^[34]$'
-    abbrev_length = request.POST.get("abbrev_length", "3")
-    if not re.match(abbrev_length_pattern, abbrev_length):
+    abbrev_length = request.POST.get("abbrev_length")
+    if not validate_abbrev_length(abbrev_length):
         abbrev_length = "3"
     abbrev_length = int(abbrev_length)
     
@@ -106,11 +105,8 @@ def game(request):
         attempts_per_round = "3"
     attempts_per_round = int(attempts_per_round)
 
-    #if abbrev_length is provided, this must be coming from the 
-    # home page so we start a new game
-    abbrev_length_pattern = r'^[34]$'
     abbrev_length = request.POST.get("abbrev_length")
-    if abbrev_length is None or not re.match(abbrev_length_pattern, abbrev_length):
+    if not validate_abbrev_length(abbrev_length):
         abbrev_length = "3"
     abbrev_length = int(abbrev_length)
 

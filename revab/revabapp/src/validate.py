@@ -35,6 +35,22 @@ def validate_attempts_per_round(attempts_per_round):
     
     return False
 
+def validate_abbrev_length(abbrev_length):
+    """
+    Return True if abbrev_length is 3 or 4, False otherwise
+    """
+    if abbrev_length is None:
+        return False
+    
+    if type(abbrev_length) != str:
+        return False
+    
+    abbrev_length_pattern = r'^[34]$'
+    if not re.match(abbrev_length_pattern, abbrev_length):
+        return False
+    
+    return True
+
 def validate_round_history(round_history, rounds):
     """
     Return True if round_history is in valid format, False otherwise
