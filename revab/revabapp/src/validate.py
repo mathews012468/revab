@@ -3,6 +3,23 @@ import re
 
 EMPTY = "..."
 
+def validate_rounds(rounds):
+    """
+    Return True if rounds is a one or two digit number, False otherwise
+    """
+    if rounds is None:
+        return False
+    
+    if type(rounds) != str:
+        return False
+    
+    rounds_pattern = r'^[123456789][0123456789]?$'
+    if not re.match(rounds_pattern, rounds):
+        return False
+    
+    return True
+
+
 def validate_round_history(round_history, rounds):
     """
     Return True if round_history is in valid format, False otherwise

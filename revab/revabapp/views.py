@@ -1,16 +1,15 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from revabapp.src.revab import generate_abbrev, check_user_guess, load_words, GuessOutcome
-from revabapp.src.validate import validate_round_history, validate_guess_history
+from revabapp.src.validate import validate_round_history, validate_guess_history, validate_rounds
 import re
 import json
 
 # Create your views here.
 
 def index(request):
-    rounds_pattern = r'^[123456789][0123456789]?$'
-    rounds = request.POST.get("rounds", "5")
-    if not re.match(rounds_pattern, rounds):
+    rounds = request.POST.get("rounds")
+    if not validate_rounds(rounds):
         rounds = "5"
     rounds = int(rounds)
 
@@ -40,9 +39,8 @@ def index(request):
     return render(request, "revabapp/index.html", context)
 
 def settings(request):
-    rounds_pattern = r'^[123456789][0123456789]?$'
-    rounds = request.POST.get("rounds", "5")
-    if not re.match(rounds_pattern, rounds):
+    rounds = request.POST.get("rounds")
+    if not validate_rounds(rounds):
         rounds = "5"
     rounds = int(rounds)
 
@@ -107,9 +105,8 @@ def best_guess(guess_history):
     return best_guess
 
 def game(request):
-    rounds_pattern = r'^[123456789][0123456789]?$'
-    rounds = request.POST.get("rounds", "5")
-    if not re.match(rounds_pattern, rounds):
+    rounds = request.POST.get("rounds")
+    if not validate_rounds(rounds):
         rounds = "5"
     rounds = int(rounds)
 
