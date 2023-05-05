@@ -1,5 +1,6 @@
 from revabapp.src.revab import check_user_guess, load_words
 import re
+import json
 
 EMPTY = "..."
 
@@ -134,6 +135,17 @@ def validate_guess_history(guess_history, attempts_per_round, abbrev):
     """
     Return True if guess_history is in a valid format, False otherwise
     """
+    if guess_history is None:
+        return False
+    
+    if type(guess_history) != str:
+        return False
+    
+    try:
+        guess_history = json.loads(guess_history.replace("\'", "\""))
+    except json.JSONDecodeError:
+        return False
+
     if type(guess_history) != list:
         return False
 

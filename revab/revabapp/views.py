@@ -120,14 +120,10 @@ def game(request):
     if not validate_guess(user_guess):
         user_guess = "."
 
-    guess_history = request.POST.get("guess_history", "[]")
-    guess_history = guess_history.replace("\'", "\"")
-    try:
-        guess_history = json.loads(guess_history)
-    except json.JSONDecodeError:
-        guess_history = [{"number": i+1, "guess": "...", "result": "...", "score": "..."} for i in range(attempts_per_round)]
+    guess_history = request.POST.get("guess_history")
     if not validate_guess_history(guess_history, attempts_per_round, abbrev):
-        guess_history = [{"number": i+1, "guess": "...", "result": "...", "score": "..."} for i in range(attempts_per_round)]
+        guess_history = json.dumps([{"number": i+1, "guess": "...", "result": "...", "score": "..."} for i in range(attempts_per_round)])
+    guess_history = json.loads(guess_history.replace("\'", "\""))
 
     total_points_pattern = r'^\d{1,3}$'
     total_points = request.POST.get("total_points", "0")
