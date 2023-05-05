@@ -84,21 +84,6 @@ def help_page(request):
 
     return render(request, "revabapp/help.html", context)
 
-def start_context(rounds, attempts_per_round, abbrev_length):
-    """
-    Return context dictionary for game page at the start of the game.
-    This dictionary is meant to be plugged into the render function
-    """
-    return {
-        "rounds": rounds,
-        "abbrev": generate_abbrev(abbrev_length),
-        "round_number": 1,
-        "attempts_per_round": attempts_per_round,
-        "total_points": 0,
-        "round_history": [{"number": i+1, "abbrev": "...", "best_guess": "...", "score": "..."} for i in range(rounds)],
-        "guess_history": [{"number": i+1, "guess": "...", "result": "...", "score": "..."} for i in range(attempts_per_round)]
-    }
-
 def best_guess(guess_history):
     best_score = -1
     best_guess = ""
@@ -125,20 +110,15 @@ def game(request):
     # home page so we start a new game
     abbrev_length_pattern = r'^[34]$'
     abbrev_length = request.POST.get("abbrev_length")
-    if abbrev_length is not None and re.match(abbrev_length_pattern, abbrev_length):
-        abbrev_length = int(abbrev_length)
-        context = start_context(rounds, attempts_per_round, abbrev_length)
-        return render(request, "revabapp/game.html", context)
-    abbrev_length = 3
+    if abbrev_length is None or not re.match(abbrev_length_pattern, abbrev_length):
+        abbrev_length = "3"
+    abbrev_length = int(abbrev_length)
 
     #if abbrev doesn't exist or isn't three or four letters, restart game
     abbrev_pattern = r'^[a-zA-Z]{3,4}$'
     abbrev = request.POST.get("abbrev")
     if abbrev is None or not re.match(abbrev_pattern, abbrev):
-        abbrev_length = 3
-        context = start_context(rounds, attempts_per_round, abbrev_length)
-        return render(request, "revabapp/game.html", context)
-    abbrev_length = len(abbrev)
+        abbrev = generate_abbrev(abbrev_length)
 
     guess_pattern = r'^[a-zA-Z]{1,25}$'
     user_guess = request.POST.get("guess")
@@ -178,7 +158,7 @@ def game(request):
             break
 
     #if we come from the help page, just load the page, don't do any computations
-    if request.POST.get("source") == "help":
+    if request.POST.get("source") in {"help", "home", "results"}:
         context = {
             "rounds": rounds,
             "abbrev": abbrev,
