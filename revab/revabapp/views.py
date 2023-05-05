@@ -140,10 +140,10 @@ def game(request):
         return render(request, "revabapp/game.html", context)
     abbrev_length = len(abbrev)
 
-    guess_pattern = r'^[a-zA-Z]+$'
+    guess_pattern = r'^[a-zA-Z]{1,25}$'
     user_guess = request.POST.get("guess")
     if user_guess is None or not re.match(guess_pattern, user_guess):
-        user_guess = "No revabs exist"
+        user_guess = "."
 
     guess_history = request.POST.get("guess_history", "[]")
     guess_history = guess_history.replace("\'", "\"")
