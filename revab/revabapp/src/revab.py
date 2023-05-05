@@ -175,11 +175,19 @@ def play_game(words, rounds=5, abbrev_length=3, tries_per_round=3):
     print(f"Your final score is {game_points}!")
     return game_points
 
+def load_words():
+    """
+    Return set of words to be used in the game.
+    """
+    #might need to think about the path here. To play the command line 
+    # version, you need to be in the same directory as words.txt
+    with open("words.txt") as f:
+        words = {line.strip() for line in f}
+    return words
 
 if __name__ == "__main__":
     #http://www.gwicks.net/dictionaries.htm
     #english list with 84_000 words
-    with open("words.txt") as f:
-        words = {line.strip() for line in f}
+    words = load_words()
 
     play_game(words, rounds=5, abbrev_length=3, tries_per_round=3)
