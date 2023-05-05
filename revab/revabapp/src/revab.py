@@ -187,7 +187,7 @@ def load_words():
 
 if __name__ == "__main__":
     #http://www.gwicks.net/dictionaries.htm
-    #english list with 84_000 words
+    #USA English list with 61_000 words
     words = load_words()
 
     play_game(words, rounds=5, abbrev_length=3, tries_per_round=3)
