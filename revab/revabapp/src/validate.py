@@ -66,6 +66,17 @@ def validate_round_history(round_history, rounds):
     """
     Return True if round_history is in valid format, False otherwise
     """
+    if round_history is None:
+        return False
+    
+    if type(round_history) != str:
+        return False
+    
+    try:
+        round_history = json.loads(round_history.replace("\'", "\""))
+    except json.JSONDecodeError:
+        return False
+    
     if type(round_history) != list:
         return False
     

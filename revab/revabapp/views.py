@@ -131,16 +131,11 @@ def game(request):
         total_points = "0"
     total_points = int(total_points)
 
-    round_history = request.POST.get("round_history", "[]")
-    round_history = round_history.replace("\'", "\"")
-    try:
-        round_history = json.loads(round_history)
-    except json.JSONDecodeError:
-        round_history = [{"number": i+1, "abbrev": "...", "best_guess": "...", "score": "..."} for i in range(rounds)]
-        total_points = 0
+    round_history = request.POST.get("round_history")
     if not validate_round_history(round_history, rounds):
-        round_history = [{"number": i+1, "abbrev": "...", "best_guess": "...", "score": "..."} for i in range(rounds)]
+        round_history = json.dumps([{"number": i+1, "abbrev": "...", "best_guess": "...", "score": "..."} for i in range(rounds)])
         total_points = 0
+    round_history = json.loads(round_history.replace("\'", "\""))
 
     round_number = 1
     for round in round_history:
