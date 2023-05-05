@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from revabapp.src.revab import generate_abbrev, check_user_guess, GuessOutcome
+from revabapp.src.revab import generate_abbrev, check_user_guess, load_words, GuessOutcome
 from revabapp.src.validate import validate_round_history, validate_guess_history
 import re
 import json
@@ -196,8 +196,7 @@ def game(request):
             attempt_number = guess["number"]
             break
 
-    with open("words.txt") as f:
-        words = {line.strip() for line in f}
+    words = load_words()
     guess_type = request.POST.get('submitbutton')
     if guess_type == "Guess":
         outcome, score = check_user_guess(abbrev, user_guess, words)

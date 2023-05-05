@@ -1,4 +1,4 @@
-from revabapp.src.revab import check_user_guess
+from revabapp.src.revab import check_user_guess, load_words
 import re
 
 EMPTY = "..."
@@ -63,8 +63,7 @@ def validate_round_history(round_history, rounds):
         if type(round["best_guess"]) != str:
             return False
     
-    with open("words.txt") as f:
-        words = {line.strip() for line in f}
+    words = load_words()
     #all scores should be ints, and the points from best_guess on the abbrev should match the score listed
     for round in round_history:
         score = round["score"]
@@ -128,8 +127,7 @@ def validate_guess_history(guess_history, attempts_per_round, abbrev):
             return False
         
     #result and score should match what we get from checking the user's guess against the abbrev
-    with open("words.txt") as f:
-        words = {line.strip() for line in f}
+    words = load_words()
     for guess in guess_history:
         user_guess = guess["guess"]
         if user_guess == EMPTY:
