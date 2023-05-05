@@ -47,6 +47,13 @@ def validate_abbrev(abbrev):
     abbrev_pattern = r'^[a-zA-Z]{3,4}$'
     return validate_input(abbrev, abbrev_pattern)
 
+def validate_guess(guess):
+    """
+    Return True if guess is at most 25 characters, False otherwise
+    """
+    guess_pattern = r'^[a-zA-Z]{1,25}$'
+    return validate_input(guess, guess_pattern)
+
 def validate_round_history(round_history, rounds):
     """
     Return True if round_history is in valid format, False otherwise

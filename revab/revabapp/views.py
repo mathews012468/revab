@@ -11,7 +11,8 @@ from revabapp.src.validate import \
     validate_rounds, \
     validate_attempts_per_round, \
     validate_abbrev_length, \
-    validate_abbrev
+    validate_abbrev, \
+    validate_guess
 import re
 import json
 
@@ -115,9 +116,8 @@ def game(request):
     if not validate_abbrev(abbrev):
         abbrev = generate_abbrev(abbrev_length)
 
-    guess_pattern = r'^[a-zA-Z]{1,25}$'
     user_guess = request.POST.get("guess")
-    if user_guess is None or not re.match(guess_pattern, user_guess):
+    if not validate_guess(user_guess):
         user_guess = "."
 
     guess_history = request.POST.get("guess_history", "[]")
