@@ -12,7 +12,8 @@ from revabapp.src.validate import \
     validate_attempts_per_round, \
     validate_abbrev_length, \
     validate_abbrev, \
-    validate_guess
+    validate_guess, \
+    validate_total_points
 import re
 import json
 
@@ -125,9 +126,8 @@ def game(request):
         guess_history = json.dumps([{"number": i+1, "guess": "...", "result": "...", "score": "..."} for i in range(attempts_per_round)])
     guess_history = json.loads(guess_history.replace("\'", "\""))
 
-    total_points_pattern = r'^\d{1,3}$'
-    total_points = request.POST.get("total_points", "0")
-    if not re.match(total_points_pattern, total_points):
+    total_points = request.POST.get("total_points")
+    if not validate_total_points(total_points):
         total_points = "0"
     total_points = int(total_points)
 

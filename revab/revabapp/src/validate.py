@@ -55,6 +55,13 @@ def validate_guess(guess):
     guess_pattern = r'^[a-zA-Z]{1,25}$'
     return validate_input(guess, guess_pattern)
 
+def validate_total_points(total_points):
+    """
+    Return True if total_points is a 1 to 3 digit number, False otherwise
+    """
+    total_points_pattern = r'^\d{1,3}$'
+    return validate_input(total_points, total_points_pattern)
+
 def validate_round_history(round_history, rounds):
     """
     Return True if round_history is in valid format, False otherwise
