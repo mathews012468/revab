@@ -49,17 +49,6 @@ def help_page(request):
 
     return render(request, "revabapp/help.html", context)
 
-def best_guess(guess_history):
-    best_score = -1
-    best_guess = ""
-    for guess in guess_history:
-        if guess["score"] == "...":
-            continue
-        if guess["score"] > best_score:
-            best_score = guess["score"]
-            best_guess = guess["guess"]
-    return best_guess
-
 def game(request):
     context = reasonable_defaults(request)
 
@@ -186,3 +175,14 @@ def reasonable_defaults(request):
         "round_number": round_number,
         "attempt_number": attempt_number
     }
+
+def best_guess(guess_history):
+    best_score = -1
+    best_guess = ""
+    for guess in guess_history:
+        if guess["score"] == "...":
+            continue
+        if guess["score"] > best_score:
+            best_score = guess["score"]
+            best_guess = guess["guess"]
+    return best_guess
