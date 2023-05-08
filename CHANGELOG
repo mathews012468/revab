@@ -1,18 +1,87 @@
-In words.txt:
-1. I fixed words that had é (like éclat), and fixed start of line 1541
-2. I added remix and variants
-3. Eliminated cadiz (city, shouldn't be a word)
-4. Eliminated milwaukee
-5. Added innie
-6. Deleted entr'acte and entr'actes (don't want to allow non-letter characters)
-7. Eliminated façadism. Architectural term that doesn't show up in Merriam Webster, and I'm trying to eliminate letters outside the standard 26 in English.
-8. Eliminated provençal for the same reason as 7
-9. Changed all é to e and ï to i
-10. Added kwanzaa
-11. Added payday and paydays
-12. Removed mcc
-13. Added flavorful and flavorfully
-14. Eliminated a lot of three letter acronyms and abbreviations
-15. Eliminated most words starting with ll since they were mostly towns in Wales
-16. Eliminated dhabi, dhahran, dhaka, and dhss
-17. Eliminated cbi, cchem, and innsbruck
+Added:
+remix and variants
+innie
+kwanzaa
+paydays
+flavorful
+flavorfully
+turd
+raker
+rakers
+kayfabe
+payback
+putz
+putzed
+putzes
+putzing
+blimy
+blimey
+shazam
+biome
+biomedicine
+biometric
+jiggly
+yikes
+larp
+larped
+larper
+larpers
+larping
+larps
+bilirubin
+pleb
+ribosomal
+ribosome
+ribosomes
+frustum
+frustums
+frusta
+gonna
+merch
+propofol
+
+Eliminated:
+zimbabwe
+guadalajara
+kinshasa
+kenya
+kenyan
+kentucky
+kenneth
+kelly
+keith
+kellogg
+kennedy
+milwaukee
+dhabi
+cbi
+ymca
+balzac
+houghton
+jefferson
+jeffrey
+jehovah
+jeff
+jennifer
+martinique
+caledonia
+caledonian
+california and variants
+cambodia
+canada and variants
+chris
+kazakhstan
+kyushu
+kyoto
+liverpool
+mozambique
+zagreb
+zaire
+zambezi
+zambia
+zambian
+czech
+czechoslovakia
+italian
+italians
+a lot of three letter acronyms and abbreviations
