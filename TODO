@@ -1,12 +1,18 @@
-1. No revab button
-2. Desperately need refactoring, views.py is a mess
+1. No revab button (done!)
+2. Desperately need refactoring, views.py is a mess (done!)
 3. README
 4. Clean up results page
-5. Settings
-6. Help
+5. Settings (done!)
+6. Help (done!)
 7. Stats
 8. Deploy (a lot to do here)
-9. Click back to home page from game page
+9. Click back to home page from game page (done!)
 10. Font
 11. Color scheme
-12. Need better input validation for guess and round history, make sure if they don't look the way I expect the website doesn't explode
+12. Need better input validation for guess and round history, make sure if they don't look the way I expect the website doesn't explode (done!)
+13. Eliminate hidden class, just stick with type=hidden inputs (done!)
+14. Maybe think about making an easy mode where abbrevs are guaranteed to have a certain number of revabs, maybe weight it by word popularity from something like google?
+15. Show the actual best answer after a round
+16. Tests
+17. Have results page rely on result-page.css, not game-page.css (done!)
+18. Have help page preserve game state if pressed in game, otherwise go back to home page (done!)
