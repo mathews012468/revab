@@ -14,7 +14,6 @@ from revabapp.src.validate import \
     validate_abbrev, \
     validate_guess, \
     validate_total_points
-import re
 import json
 
 # Create your views here.
