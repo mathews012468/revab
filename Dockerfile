@@ -7,7 +7,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-# RUN ["django-admin", "collectstatic"]
+RUN ["python", "manage.py", "collectstatic", "--noinput"]
 
 RUN [ "python", "prepare_config.py"]
 

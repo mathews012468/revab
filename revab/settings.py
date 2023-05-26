@@ -122,8 +122,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-#changes from dev to prod
-STATIC_ROOT = '/Users/matthewsoto/Desktop/learntocode.nosync/assorted_python_files/revab/static'
+
+STATIC_ROOT = '/app/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
