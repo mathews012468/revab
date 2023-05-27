@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    volumes:
+      - static:/static
+  backend:
+    build: ./revab
+    volumes:
+      - static:/app/static
+volumes:
+  static:
