@@ -55,6 +55,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+#pages with a form need a csrf token, when debug is false this field
+# must include the domain as mentioned in this stack overflow answer:
+# https://stackoverflow.com/a/72343027/
+CSRF_TRUSTED_ORIGINS = [
+    'http://revab.us'
+]
+
 ROOT_URLCONF = 'revab.urls'
 
 TEMPLATES = [
