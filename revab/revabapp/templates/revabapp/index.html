@@ -33,9 +33,17 @@
             <img src="{% static 'revabapp/img/question-solid.svg' %}" alt="?">
           </button>
         </form>
-        <button>
-          <img src="{% static 'revabapp/img/chart-simple-solid.svg' %}" alt="stats">
-        </button>
+        <form action="/stats" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="rounds" value="{{ rounds }}">
+          <input type="hidden" name="attempts_per_round" value="{{ attempts_per_round }}">
+          <input type="hidden" name="abbrev_length" value="{{ abbrev_length }}">
+          <input type="hidden" name="settings" value="{{ settings }}">
+          <input type="hidden" name="destination" value="/">
+          <button id="stats">
+            <img src="{% static 'revabapp/img/chart-simple-solid.svg' %}" alt="stats">
+          </button>
+        </form>
       </div>
     </header>
     <main>
