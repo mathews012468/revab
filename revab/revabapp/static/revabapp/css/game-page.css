@@ -30,6 +30,12 @@ hr {
     gap: 10px;
 }
 
+.guess-input-row {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
 #guess-input {
     display: flex;
     flex-direction: column;
