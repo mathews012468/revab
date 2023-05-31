@@ -55,6 +55,19 @@
   <main>
     <h2>Stats</h2>
   </main>
+  <form method="post" action="{{ destination }}">
+    {% csrf_token %}
+    <input type="hidden" name="rounds" value="{{ rounds }}">
+    <input type="hidden" name="attempts_per_round" value="{{ attempts_per_round }}">
+    <input type="hidden" name="abbrev_length" value="{{ abbrev_length }}">
+    <input type="hidden" name="abbrev" value="{{ abbrev }}">
+    <input type="hidden" name="guess_history" value="{{ guess_history }}">
+    <input type="hidden" name="round_history" value="{{ round_history }}">
+    <input type="hidden" name="total_points" value="{{ total_points }}">
+    <input type="hidden" name="settings" value="{{ settings }}">
+    <input type="hidden" name="source" value="stats">
+    <input type="submit" value="Back">
+  </form>
 </body>
 
 </html>
