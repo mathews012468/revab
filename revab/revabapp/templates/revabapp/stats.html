@@ -25,6 +25,7 @@
         <input type="hidden" name="rounds" value="{{ rounds }}">
         <input type="hidden" name="attempts_per_round" value="{{ attempts_per_round }}">
         <input type="hidden" name="abbrev_length" value="{{ abbrev_length }}">
+        <input type="hidden" name="settings" value="{{ settings }}">
         <input type="hidden" name="destination" value="{{ destination }}">
         <button>
           <img src="{% static 'revabapp/img/question-solid.svg' %}" alt="?">
@@ -35,8 +36,9 @@
         <input type="hidden" name="rounds" value="{{ rounds }}">
         <input type="hidden" name="attempts_per_round" value="{{ attempts_per_round }}">
         <input type="hidden" name="abbrev_length" value="{{ abbrev_length }}">
+        <input type="hidden" name="settings" value="{{ settings }}">
         <input type="hidden" name="destination" value="{{ destination }}">
-        <button>
+        <button id="stats">
             <img src="{% static 'revabapp/img/chart-simple-solid.svg' %}" alt="stats">
         </button>
       </form>
@@ -50,6 +52,7 @@
     <input type="hidden" name="rounds" value="{{ rounds }}">
     <input type="hidden" name="attempts_per_round" value="{{ attempts_per_round }}">
     <input type="hidden" name="abbrev_length" value="{{ abbrev_length }}">
+    <input type="hidden" name="settings" value="{{ settings }}">
     <input type="submit" value="Back">
   </form>
 </body>
