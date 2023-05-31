@@ -9,6 +9,7 @@ class GuessOutcome(Enum):
     NONE_IS_INCORRECT = "At least one revab exists" #there are revabs, but the user indicated there weren't any
     NONE_IS_CORRECT = "No revabs exist" #there are no revabs and the user got this right
 
+NO_REVABS_POSSIBLE = "."
 
 def _is_abbreviation(abbrev, word):
     """
@@ -92,10 +93,10 @@ def check_user_guess(abbrev, guess, words):
     normalized_guess = guess.strip().lower()
     revabs = _all_possible_words_for_abbreviation(abbrev, words)
 
-    if len(revabs) != 0 and normalized_guess == ".":
+    if len(revabs) != 0 and normalized_guess == NO_REVABS_POSSIBLE:
         return GuessOutcome.NONE_IS_INCORRECT, WRONG_POINTS
     
-    if len(revabs) == 0 and normalized_guess == ".":
+    if len(revabs) == 0 and normalized_guess == NO_REVABS_POSSIBLE:
         return GuessOutcome.NONE_IS_CORRECT, CORRECT_POINTS
     
     if normalized_guess not in words:
