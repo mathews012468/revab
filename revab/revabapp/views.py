@@ -33,7 +33,15 @@ def index(request):
     return render(request, "revabapp/index.html", context)
 
 def settings(request):
-    context = reasonable_defaults(request)
+    #Should not use reasonable_defaults here because it gives default values for all post key-value
+    # pairs I use throughout the site, a lot of which only apply to the game and results pages.
+    # This is an issue when user visits help page from settings then returns to settings; in that case,
+    # reasonable_defaults would see 'abbrev': None and then treat None as a four-letter abbreviation.
+    context = {
+        "rounds": request.POST.get('rounds'),
+        "attempts_per_round": request.POST.get('attempts_per_round'),
+        "abbrev_length": request.POST.get('abbrev_length')
+    }
     return render(request, "revabapp/settings.html", context)
 
 def stats(request):
