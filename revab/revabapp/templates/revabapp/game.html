@@ -13,6 +13,23 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
   <link type="text/css" rel="stylesheet" href="{% static 'revabapp/css/styles.css' %}">
   <link type="text/css" rel="stylesheet" href="{% static 'revabapp/css/game-page.css' %}">
+  <script>
+  function init() {
+    let form = document.getElementById("guess-input")
+    function stripGuess() {
+      let guessInput = document.getElementsByName("guess")[0]
+      guessInput.value = guessInput.value.trim()
+    }
+
+    form.addEventListener("submit", stripGuess)
+  }
+
+  document.addEventListener('readystatechange', function() {
+    if (document.readyState === "complete") {
+      init();
+    }
+  });
+  </script>
   <meta name="viewport" content="width=device-width,initial-scale=1">
 </head>
 
@@ -83,7 +100,7 @@
           <input type="hidden" name="total_points" value="{{ total_points }}">
           <input type="hidden" name="round_history" value="{{ round_history }}">
           <input type="hidden" name="guess_history" value="{{ guess_history }}">
-          <input type="text" name="guess" placeholder="Guess" id="revab-guess" pattern="[a-zA-Z]{1,25}">
+          <input type="text" name="guess" placeholder="Guess" id="revab-guess">
           <input type="submit" name="submitbutton" value="Guess">
         </div>
         <div>or</div>
