@@ -4,7 +4,8 @@ from revabapp.src.revab import \
     generate_abbrev, \
     check_user_guess, \
     load_words, \
-    GuessOutcome
+    GuessOutcome, \
+    NO_REVABS_POSSIBLE
 from revabapp.src.validate import \
     validate_round_history, \
     validate_guess_history, \
@@ -13,7 +14,9 @@ from revabapp.src.validate import \
     validate_abbrev_length, \
     validate_abbrev, \
     validate_guess, \
-    validate_total_points
+    validate_total_points, \
+    EMPTY, \
+    NO_REVABS_GUESS_MESSAGE
 import json
 
 # Create your views here.
@@ -30,7 +33,15 @@ def index(request):
     return render(request, "revabapp/index.html", context)
 
 def settings(request):
-    context = reasonable_defaults(request)
+    #Should not use reasonable_defaults here because it gives default values for all post key-value
+    # pairs I use throughout the site, a lot of which only apply to the game and results pages.
+    # This is an issue when user visits help page from settings then returns to settings; in that case,
+    # reasonable_defaults would see 'abbrev': None and then treat None as a four-letter abbreviation.
+    context = {
+        "rounds": request.POST.get('rounds'),
+        "attempts_per_round": request.POST.get('attempts_per_round'),
+        "abbrev_length": request.POST.get('abbrev_length')
+    }
     return render(request, "revabapp/settings.html", context)
 
 def stats(request):
@@ -68,14 +79,20 @@ def game(request):
     #submit user guess
     words = load_words()
     guess_type = request.POST.get('submitbutton')
+    #guess is what I submit on behalf of the user, context["user_guess"] is what gets shown
+    # on the website. In most cases these should be the same; they're different only when the
+    # user thinks that no revabs exist. There is a special string representing the guess
+    # "no revabs exist" in code that I don't want to expose to the user.
+    guess = context["user_guess"]
     if guess_type != "Guess":
-        context["user_guess"] = "."
-    outcome, score = check_user_guess(context["abbrev"], context["user_guess"], words)
+        guess = NO_REVABS_POSSIBLE
+        context["user_guess"] = NO_REVABS_GUESS_MESSAGE
+    outcome, score = check_user_guess(context["abbrev"], guess, words)
     
     #calculate score
     round_score = 0
     for guess in context["guess_history"]:
-        if guess["score"] == "...":
+        if guess["score"] == EMPTY:
             break
         if guess["score"] > round_score:
             round_score = guess["score"]
@@ -102,7 +119,7 @@ def game(request):
         }
         context["abbrev"] = generate_abbrev(context["abbrev_length"])
         context["total_points"] += round_score
-        context["guess_history"] = [{"number": i+1, "guess": "...", "result": "...", "score": "..."} for i in range(context["attempts_per_round"])]
+        context["guess_history"] = [{"number": i+1, "guess": EMPTY, "result": EMPTY, "score": EMPTY} for i in range(context["attempts_per_round"])]
         context["round_number"] += 1
 
     #if game is over, move to results page
@@ -140,11 +157,11 @@ def reasonable_defaults(request):
 
     user_guess = request.POST.get("guess")
     if not validate_guess(user_guess):
-        user_guess = "."
+        user_guess = NO_REVABS_POSSIBLE
 
     guess_history = request.POST.get("guess_history")
     if not validate_guess_history(guess_history, attempts_per_round, abbrev):
-        guess_history = json.dumps([{"number": i+1, "guess": "...", "result": "...", "score": "..."} for i in range(attempts_per_round)])
+        guess_history = json.dumps([{"number": i+1, "guess": EMPTY, "result": EMPTY, "score": EMPTY} for i in range(attempts_per_round)])
     guess_history = json.loads(guess_history.replace("\'", "\""))
 
     total_points = request.POST.get("total_points")
@@ -154,13 +171,13 @@ def reasonable_defaults(request):
 
     round_history = request.POST.get("round_history")
     if not validate_round_history(round_history, rounds):
-        round_history = json.dumps([{"number": i+1, "abbrev": "...", "best_guess": "...", "score": "..."} for i in range(rounds)])
+        round_history = json.dumps([{"number": i+1, "abbrev": EMPTY, "best_guess": EMPTY, "score": EMPTY} for i in range(rounds)])
         total_points = 0
     round_history = json.loads(round_history.replace("\'", "\""))
 
     round_number = 1
     for round in round_history:
-        if round["abbrev"] == "...":
+        if round["abbrev"] == EMPTY:
             round_number = round["number"]
             break
 
@@ -168,7 +185,7 @@ def reasonable_defaults(request):
     attempt_number = attempts_per_round
     for guess in guess_history:
         #if no record of guess exists, then that attempt hasn't happened
-        if guess["guess"] == "...":
+        if guess["guess"] == EMPTY:
             attempt_number = guess["number"]
             break
 
@@ -189,7 +206,7 @@ def best_guess(guess_history):
     best_score = -1
     best_guess = ""
     for guess in guess_history:
-        if guess["score"] == "...":
+        if guess["score"] == EMPTY:
             continue
         if guess["score"] > best_score:
             best_score = guess["score"]

@@ -1,8 +1,9 @@
-from revabapp.src.revab import check_user_guess, load_words
+from revabapp.src.revab import check_user_guess, load_words, NO_REVABS_POSSIBLE
 import re
 import json
 
 EMPTY = "..."
+NO_REVABS_GUESS_MESSAGE = "No revabs exist"
 
 def validate_input(value, pattern):
     """
@@ -143,10 +144,16 @@ def validate_round_history(round_history, rounds):
         if type(score) != int:
             return False
         
-        _, correct_score = check_user_guess(round["abbrev"], round["best_guess"], words)
+        #there is a special string I use to submit user guess when they say that no revabs exist,
+        # and I don't display that string in the round history (when it is the best guess that round).
+        # Instead of submitting the displayed guess, I submit the special "no revabs" string.
+        guess = round["best_guess"]
+        if round["best_guess"] == NO_REVABS_GUESS_MESSAGE:
+            guess = NO_REVABS_POSSIBLE
+        _, correct_score = check_user_guess(round["abbrev"], guess, words)
         if score != correct_score:
             return False
-    
+
     return True
         
 def validate_guess_history(guess_history, attempts_per_round, abbrev):
@@ -214,9 +221,8 @@ def validate_guess_history(guess_history, attempts_per_round, abbrev):
         if user_guess == EMPTY:
             continue
 
-        if user_guess == "No revabs exist":
-            #a period tells 'check_user_guess' that the user thinks no revabs exist
-            user_guess = "."
+        if user_guess == NO_REVABS_GUESS_MESSAGE:
+            user_guess = NO_REVABS_POSSIBLE
         outcome, score = check_user_guess(abbrev, user_guess, words)
         if guess["result"] != outcome.value:
             return False
