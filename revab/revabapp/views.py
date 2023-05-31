@@ -69,9 +69,15 @@ def game(request):
     #submit user guess
     words = load_words()
     guess_type = request.POST.get('submitbutton')
+    #guess is what I submit on behalf of the user, context["user_guess"] is what gets shown
+    # on the website. In most cases these should be the same; they're different only when the
+    # user thinks that no revabs exist. There is a special string representing the guess
+    # "no revabs exist" in code that I don't want to expose to the user.
+    guess = context["user_guess"]
     if guess_type != "Guess":
-        context["user_guess"] = NO_REVABS_POSSIBLE
-    outcome, score = check_user_guess(context["abbrev"], context["user_guess"], words)
+        guess = NO_REVABS_POSSIBLE
+        context["user_guess"] = "No revabs exist"
+    outcome, score = check_user_guess(context["abbrev"], guess, words)
     
     #calculate score
     round_score = 0
