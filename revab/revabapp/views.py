@@ -14,7 +14,8 @@ from revabapp.src.validate import \
     validate_abbrev_length, \
     validate_abbrev, \
     validate_guess, \
-    validate_total_points
+    validate_total_points, \
+    EMPTY
 import json
 
 # Create your views here.
@@ -82,7 +83,7 @@ def game(request):
     #calculate score
     round_score = 0
     for guess in context["guess_history"]:
-        if guess["score"] == "...":
+        if guess["score"] == EMPTY:
             break
         if guess["score"] > round_score:
             round_score = guess["score"]
@@ -109,7 +110,7 @@ def game(request):
         }
         context["abbrev"] = generate_abbrev(context["abbrev_length"])
         context["total_points"] += round_score
-        context["guess_history"] = [{"number": i+1, "guess": "...", "result": "...", "score": "..."} for i in range(context["attempts_per_round"])]
+        context["guess_history"] = [{"number": i+1, "guess": EMPTY, "result": EMPTY, "score": EMPTY} for i in range(context["attempts_per_round"])]
         context["round_number"] += 1
 
     #if game is over, move to results page
@@ -151,7 +152,7 @@ def reasonable_defaults(request):
 
     guess_history = request.POST.get("guess_history")
     if not validate_guess_history(guess_history, attempts_per_round, abbrev):
-        guess_history = json.dumps([{"number": i+1, "guess": "...", "result": "...", "score": "..."} for i in range(attempts_per_round)])
+        guess_history = json.dumps([{"number": i+1, "guess": EMPTY, "result": EMPTY, "score": EMPTY} for i in range(attempts_per_round)])
     guess_history = json.loads(guess_history.replace("\'", "\""))
 
     total_points = request.POST.get("total_points")
@@ -161,13 +162,13 @@ def reasonable_defaults(request):
 
     round_history = request.POST.get("round_history")
     if not validate_round_history(round_history, rounds):
-        round_history = json.dumps([{"number": i+1, "abbrev": "...", "best_guess": "...", "score": "..."} for i in range(rounds)])
+        round_history = json.dumps([{"number": i+1, "abbrev": EMPTY, "best_guess": EMPTY, "score": EMPTY} for i in range(rounds)])
         total_points = 0
     round_history = json.loads(round_history.replace("\'", "\""))
 
     round_number = 1
     for round in round_history:
-        if round["abbrev"] == "...":
+        if round["abbrev"] == EMPTY:
             round_number = round["number"]
             break
 
@@ -175,7 +176,7 @@ def reasonable_defaults(request):
     attempt_number = attempts_per_round
     for guess in guess_history:
         #if no record of guess exists, then that attempt hasn't happened
-        if guess["guess"] == "...":
+        if guess["guess"] == EMPTY:
             attempt_number = guess["number"]
             break
 
@@ -196,7 +197,7 @@ def best_guess(guess_history):
     best_score = -1
     best_guess = ""
     for guess in guess_history:
-        if guess["score"] == "...":
+        if guess["score"] == EMPTY:
             continue
         if guess["score"] > best_score:
             best_score = guess["score"]

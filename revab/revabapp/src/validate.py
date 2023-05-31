@@ -143,10 +143,16 @@ def validate_round_history(round_history, rounds):
         if type(score) != int:
             return False
         
-        _, correct_score = check_user_guess(round["abbrev"], round["best_guess"], words)
+        #there is a special string I use to submit user guess when they say that no revabs exist,
+        # and I don't display that string in the round history (when it is the best guess that round).
+        # Instead of submitting the displayed guess, I submit the special "no revabs" string.
+        guess = round["best_guess"]
+        if round["best_guess"] == "No revabs exist":
+            guess = NO_REVABS_POSSIBLE
+        _, correct_score = check_user_guess(round["abbrev"], guess, words)
         if score != correct_score:
             return False
-    
+
     return True
         
 def validate_guess_history(guess_history, attempts_per_round, abbrev):
