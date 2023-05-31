@@ -1,1 +1,60 @@
-<h1>Hey!</h1>
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Revab</title>
+  <meta name="description" content="Find the shortest reverse abbreviation." />
+  <link rel="icon" href="{% static 'revabapp/img/favicon.svg' %}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="{% static 'revabapp/css/styles.css' %}">
+  <link type="text/css" rel="stylesheet" href="{% static 'revabapp/css/stats-page.css' %}">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+
+<body>
+  <header>
+    <h1><a href="/">Revab</a></h1>
+    <div class="icons">
+      <form method="post" action="/help">
+        {% csrf_token %}
+        <input type="hidden" name="rounds" value="{{ rounds }}">
+        <input type="hidden" name="attempts_per_round" value="{{ attempts_per_round }}">
+        <input type="hidden" name="abbrev_length" value="{{ abbrev_length }}">
+        <input type="hidden" name="abbrev" value="{{ abbrev }}">
+        <input type="hidden" name="guess_history" value="{{ guess_history }}">
+        <input type="hidden" name="round_history" value="{{ round_history }}">
+        <input type="hidden" name="total_points" value="{{ total_points }}">
+        <input type="hidden" name="settings" value="{{ settings }}">
+        <input type="hidden" name="destination" value="{{ destination }}">
+        <button>
+          <img src="{% static 'revabapp/img/question-solid.svg' %}" alt="?">
+        </button>
+      </form>
+      <form method="post" action="/help">
+        {% csrf_token %}
+        <input type="hidden" name="rounds" value="{{ rounds }}">
+        <input type="hidden" name="attempts_per_round" value="{{ attempts_per_round }}">
+        <input type="hidden" name="abbrev_length" value="{{ abbrev_length }}">
+        <input type="hidden" name="abbrev" value="{{ abbrev }}">
+        <input type="hidden" name="guess_history" value="{{ guess_history }}">
+        <input type="hidden" name="round_history" value="{{ round_history }}">
+        <input type="hidden" name="total_points" value="{{ total_points }}">
+        <input type="hidden" name="settings" value="{{ settings }}">
+        <input type="hidden" name="destination" value="{{ destination }}">
+        <button>
+            <img src="{% static 'revabapp/img/chart-simple-solid.svg' %}" alt="stats">
+        </button>
+      </form>
+    </div>
+  </header>
+  <main>
+    <h2>Stats</h2>
+  </main>
+</body>
+
+</html>
