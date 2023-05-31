@@ -33,6 +33,10 @@ def settings(request):
     context = reasonable_defaults(request)
     return render(request, "revabapp/settings.html", context)
 
+def stats(request):
+    context = reasonable_defaults(request)
+    return render(request, "revabapp/stats.html", context)
+
 def help_page(request):
     context = {
         "rounds": request.POST.get('rounds'),
