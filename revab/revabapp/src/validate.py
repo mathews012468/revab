@@ -1,4 +1,4 @@
-from revabapp.src.revab import check_user_guess, load_words
+from revabapp.src.revab import check_user_guess, load_words, NO_REVABS_POSSIBLE
 import re
 import json
 
@@ -215,8 +215,7 @@ def validate_guess_history(guess_history, attempts_per_round, abbrev):
             continue
 
         if user_guess == "No revabs exist":
-            #a period tells 'check_user_guess' that the user thinks no revabs exist
-            user_guess = "."
+            user_guess = NO_REVABS_POSSIBLE
         outcome, score = check_user_guess(abbrev, user_guess, words)
         if guess["result"] != outcome.value:
             return False
