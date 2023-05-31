@@ -15,7 +15,8 @@ from revabapp.src.validate import \
     validate_abbrev, \
     validate_guess, \
     validate_total_points, \
-    EMPTY
+    EMPTY, \
+    NO_REVABS_GUESS_MESSAGE
 import json
 
 # Create your views here.
@@ -77,7 +78,7 @@ def game(request):
     guess = context["user_guess"]
     if guess_type != "Guess":
         guess = NO_REVABS_POSSIBLE
-        context["user_guess"] = "No revabs exist"
+        context["user_guess"] = NO_REVABS_GUESS_MESSAGE
     outcome, score = check_user_guess(context["abbrev"], guess, words)
     
     #calculate score

@@ -3,6 +3,7 @@ import re
 import json
 
 EMPTY = "..."
+NO_REVABS_GUESS_MESSAGE = "No revabs exist"
 
 def validate_input(value, pattern):
     """
@@ -147,7 +148,7 @@ def validate_round_history(round_history, rounds):
         # and I don't display that string in the round history (when it is the best guess that round).
         # Instead of submitting the displayed guess, I submit the special "no revabs" string.
         guess = round["best_guess"]
-        if round["best_guess"] == "No revabs exist":
+        if round["best_guess"] == NO_REVABS_GUESS_MESSAGE:
             guess = NO_REVABS_POSSIBLE
         _, correct_score = check_user_guess(round["abbrev"], guess, words)
         if score != correct_score:
@@ -220,7 +221,7 @@ def validate_guess_history(guess_history, attempts_per_round, abbrev):
         if user_guess == EMPTY:
             continue
 
-        if user_guess == "No revabs exist":
+        if user_guess == NO_REVABS_GUESS_MESSAGE:
             user_guess = NO_REVABS_POSSIBLE
         outcome, score = check_user_guess(abbrev, user_guess, words)
         if guess["result"] != outcome.value:
