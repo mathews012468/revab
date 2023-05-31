@@ -34,6 +34,11 @@ hr {
     display: flex;
     flex-direction: row;
     gap: 5px;
+    max-width: 100%;
+}
+
+#revab-guess {
+    width: 70%;
 }
 
 #guess-input {
