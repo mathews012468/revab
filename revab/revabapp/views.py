@@ -4,7 +4,8 @@ from revabapp.src.revab import \
     generate_abbrev, \
     check_user_guess, \
     load_words, \
-    GuessOutcome
+    GuessOutcome, \
+    NO_REVABS_POSSIBLE
 from revabapp.src.validate import \
     validate_round_history, \
     validate_guess_history, \
@@ -69,7 +70,7 @@ def game(request):
     words = load_words()
     guess_type = request.POST.get('submitbutton')
     if guess_type != "Guess":
-        context["user_guess"] = "."
+        context["user_guess"] = NO_REVABS_POSSIBLE
     outcome, score = check_user_guess(context["abbrev"], context["user_guess"], words)
     
     #calculate score
@@ -140,7 +141,7 @@ def reasonable_defaults(request):
 
     user_guess = request.POST.get("guess")
     if not validate_guess(user_guess):
-        user_guess = "."
+        user_guess = NO_REVABS_POSSIBLE
 
     guess_history = request.POST.get("guess_history")
     if not validate_guess_history(guess_history, attempts_per_round, abbrev):
