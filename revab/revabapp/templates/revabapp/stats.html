@@ -35,7 +35,7 @@
           <img src="{% static 'revabapp/img/question-solid.svg' %}" alt="?">
         </button>
       </form>
-      <form method="post" action="/help">
+      <form method="post" action="/stats">
         {% csrf_token %}
         <input type="hidden" name="rounds" value="{{ rounds }}">
         <input type="hidden" name="attempts_per_round" value="{{ attempts_per_round }}">
