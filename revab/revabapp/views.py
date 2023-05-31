@@ -38,11 +38,6 @@ def stats(request):
         "rounds": request.POST.get('rounds'),
         "attempts_per_round": request.POST.get('attempts_per_round'),
         "abbrev_length": request.POST.get('abbrev_length'),
-        "abbrev": request.POST.get('abbrev'),
-        "guess_history": request.POST.get('guess_history'),
-        "round_history": request.POST.get('round_history'),
-        "total_points": request.POST.get('total_points'),
-        "settings": request.POST.get('settings'),
         "destination": request.POST.get('destination')
     }
     return render(request, "revabapp/stats.html", context)
