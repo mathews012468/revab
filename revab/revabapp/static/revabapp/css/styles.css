@@ -56,7 +56,7 @@ h1 a {
 
 .revab-letter {
     display: inline-block;
-    font-size: 24px;
+    font-size: 2em;
     font-weight: bold;
     color: var(--background-color);
     background-color: var(--foreground-color);
