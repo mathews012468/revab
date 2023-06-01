@@ -139,6 +139,15 @@ def get_name_for_challenge(request):
     context["path"] = "challenge/name"
     return render(request, "revabapp/results.html", context)
 
+def display_challenge_link(request):
+    context = reasonable_defaults(request)
+    context["name"] = request.POST.get("name")
+    context["path"] = "challenge/link"
+    challenge_code = get_challenge_code(context["name"], context["round_history"])
+    context["link"] = f"http://revab.us/challenge/start/{challenge_code}"
+
+    return render(request, "revabapp/results.html", context)
+
 def start_challenge(request, challenge_code):
     opponent_name, opponent_round_history = get_name_and_round_history(challenge_code)
     rounds = len(opponent_round_history)

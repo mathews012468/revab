@@ -78,6 +78,7 @@
       </form>
       {% elif path == "challenge/name" %}
       <form action="/challenge/link" method="post">
+        {% csrf_token %}
         <input type="hidden" name="rounds" value="{{ rounds }}">
         <input type="hidden" name="abbrev_length" value="{{ abbrev_length }}">
         <input type="hidden" name="attempts_per_round" value="{{ attempts_per_round }}">
@@ -87,6 +88,13 @@
         <input type="text" placeholder="Name" id="name" name="name">
         <input type="submit" value="Enter">
       </form>
+      {% elif path == "challenge/link" %}
+      <div>
+        <label for="link">{{ name }}, send your friend the following link!</label>
+      </div>
+      <div>
+        <input type="text" readonly="readonly" id="link" value="{{ link }}">
+      </div>
       {% endif %}
     </section>
   </main>
