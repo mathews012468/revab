@@ -65,8 +65,29 @@
       </form>
     </section>
     <section id="third-row">
+      {% if path == "results" %}
       <button>Share results</button>
-      <button>Challenge a friend</button>
+      <form action="/challenge/name" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="rounds" value="{{ rounds }}">
+        <input type="hidden" name="abbrev_length" value="{{ abbrev_length }}">
+        <input type="hidden" name="attempts_per_round" value="{{ attempts_per_round }}">
+        <input type="hidden" name="round_history" value="{{ round_history }}">
+        <input type="hidden" name="total_points" value="{{ total_points }}">
+        <input type="submit" value="Challenge a friend">
+      </form>
+      {% elif path == "challenge/name" %}
+      <form action="/challenge/link" method="post">
+        <input type="hidden" name="rounds" value="{{ rounds }}">
+        <input type="hidden" name="abbrev_length" value="{{ abbrev_length }}">
+        <input type="hidden" name="attempts_per_round" value="{{ attempts_per_round }}">
+        <input type="hidden" name="round_history" value="{{ round_history }}">
+        <input type="hidden" name="total_points" value="{{ total_points }}">
+        <label for="name">Enter your name (for your friend to see who is challenging them):</label>
+        <input type="text" placeholder="Name" id="name" name="name">
+        <input type="submit" value="Enter">
+      </form>
+      {% endif %}
     </section>
   </main>
 </body>

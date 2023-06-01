@@ -127,10 +127,17 @@ def game(request):
 
     #if game is over, move to results page
     if context["round_number"] > context["rounds"]:
+        #path key used to figure out what to display in the last row of the results page
+        context["path"] = "results"
         return render(request, "revabapp/results.html", context)
 
     #else, stay on the game page
     return render(request, "revabapp/game.html", context)
+
+def get_name_for_challenge(request):
+    context = reasonable_defaults(request)
+    context["path"] = "challenge/name"
+    return render(request, "revabapp/results.html", context)
 
 def start_challenge(request, challenge_code):
     opponent_name, opponent_round_history = get_name_and_round_history(challenge_code)
