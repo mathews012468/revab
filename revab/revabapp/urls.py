@@ -7,5 +7,6 @@ urlpatterns = [
     path("settings", views.settings, name="settings"),
     path("help", views.help_page, name="help"),
     path("game", views.game, name="game"),
-    path("stats", views.stats, name="stats")
+    path("stats", views.stats, name="stats"),
+    path("challenge/start/<challenge_code>", views.start_challenge)
 ]

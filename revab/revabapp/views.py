@@ -17,6 +17,9 @@ from revabapp.src.validate import \
     validate_total_points, \
     EMPTY, \
     NO_REVABS_GUESS_MESSAGE
+from revabapp.src.encode_challenge_link import \
+    get_challenge_code, \
+    get_name_and_round_history
 import json
 
 # Create your views here.
@@ -128,6 +131,16 @@ def game(request):
 
     #else, stay on the game page
     return render(request, "revabapp/game.html", context)
+
+def start_challenge(request, challenge_code):
+    opponent_name, opponent_round_history = get_name_and_round_history(challenge_code)
+    rounds = len(opponent_round_history)
+    context = {
+        "opponent_name": opponent_name,
+        "opponent_round_history": opponent_round_history,
+        "rounds": rounds
+    }
+    return render(request, "revabapp/challenge-start.html", context)
 
 def reasonable_defaults(request):
     """
