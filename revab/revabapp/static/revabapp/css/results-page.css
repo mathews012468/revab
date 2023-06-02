@@ -24,3 +24,7 @@ section {
 .icons {
     display: none;
 }
+
+#share-results {
+    display: none;
+}

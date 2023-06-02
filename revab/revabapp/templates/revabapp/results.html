@@ -66,7 +66,7 @@
     </section>
     <section id="third-row">
       {% if path == "results" %}
-      <button>Share results</button>
+      <button id="share-results">Share results</button>
       <form action="/challenge/name" method="post">
         {% csrf_token %}
         <input type="hidden" name="rounds" value="{{ rounds }}">
