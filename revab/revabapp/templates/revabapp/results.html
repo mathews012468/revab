@@ -64,8 +64,8 @@
         <input type="submit" value="New Game">
       </form>
     </section>
-    <section id="third-row">
-      {% if path == "results" %}
+    {% if path == "results" %}
+    <section>
       <button id="share-results">Share results</button>
       <form action="/challenge/name" method="post">
         {% csrf_token %}
@@ -76,8 +76,10 @@
         <input type="hidden" name="total_points" value="{{ total_points }}">
         <input type="submit" value="Challenge a friend">
       </form>
-      {% elif path == "challenge/name" %}
-      <form action="/challenge/link" method="post">
+    </section>
+    {% elif path == "challenge/name" %}
+    <section>
+      <form class="challenge-section" action="/challenge/link" method="post">
         {% csrf_token %}
         <input type="hidden" name="rounds" value="{{ rounds }}">
         <input type="hidden" name="abbrev_length" value="{{ abbrev_length }}">
@@ -85,17 +87,17 @@
         <input type="hidden" name="round_history" value="{{ round_history }}">
         <input type="hidden" name="total_points" value="{{ total_points }}">
         <label for="name">Enter your name (for your friend to see who is challenging them):</label>
-        <input type="text" placeholder="Name" id="name" name="name">
-        <input type="submit" value="Enter">
+        <div>
+          <input type="text" placeholder="Name" id="name" name="name">
+          <input type="submit" value="Enter">
+        </div>
       </form>
-      {% elif path == "challenge/link" %}
-      <div>
-        <label for="link">{{ name }}, send your friend the following link!</label>
-      </div>
-      <div>
-        <input type="text" readonly="readonly" id="link" value="{{ link }}">
-      </div>
-      {% endif %}
     </section>
+    {% elif path == "challenge/link" %}
+    <section class="challenge-section">
+      <label for="link">{{ name }}, send your friend the following link!</label>
+      <input type="text" readonly="readonly" id="link" value="{{ link }}">
+    </section>
+    {% endif %}
   </main>
 </body>
