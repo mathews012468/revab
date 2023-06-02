@@ -1,0 +1,49 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Revab</title>
+  <meta name="description" content="Find the shortest reverse abbreviation." />
+  <link rel="icon" href="{% static 'revabapp/img/favicon.svg' %}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="{% static 'revabapp/css/styles.css' %}">
+  <link type="text/css" rel="stylesheet" href="{% static 'revabapp/css/challenge-start-page.css' %}">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+
+<body>
+  <header>
+    <h1><a href="/">Revab</a></h1>
+    <div class="icons">
+      <button>
+        <img src="{% static 'revabapp/img/question-solid.svg' %}" alt="?">
+      </button>
+      <button id="stats">
+        <img src="{% static 'revabapp/img/chart-simple-solid.svg' %}" alt="stats">
+      </button>
+    </div>
+  </header>
+  <main>
+    <h2>{{ opponent_name }} is challenging you to a game with {{ rounds }} rounds!</h2>
+    <div id="first-row">
+      <form action="/challenge/game" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="opponent_name" value="{{ opponent_name }}">
+        <input type="hidden" name="opponent_round_history" value="{{ opponent_round_history }}">
+        <input type="hidden" name="source" value="home">
+        <input type="submit" value="Start">
+      </form>
+    </div>
+    <div id="second-row">
+      <form action="/" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Home">
+      </form>
+    </div>
+  </main>
+</body>

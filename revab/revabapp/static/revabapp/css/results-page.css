@@ -11,16 +11,27 @@ section {
     align-items: center;
 }
 
-#first-row div {
+.results-display div {
     flex: 1;
     margin: 0 10px;
 }
 
-#total-points {
+.total-points {
     text-align: center;
     font-size: 3em;
 }
 
 .icons {
     display: none;
+}
+
+#share-results {
+    display: none;
+}
+
+.challenge-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
 }
