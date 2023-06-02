@@ -226,6 +226,7 @@ def get_name_for_challenge(request):
 
 def display_challenge_link(request):
     context = reasonable_defaults(request)
+    #NOTE: name cannot have commas! Add validation
     context["name"] = request.POST.get("name")
     context["path"] = "challenge/link"
     challenge_code = get_challenge_code(context["name"], context["round_history"])

@@ -8,6 +8,7 @@ ALTCHARS = b"_;"
 STRING_ENCODING = "utf-8"
 
 #TODO: should I validate in these functions? I think yes!
+#NOTE: I intentionally ignore the attempts per round.
 def get_challenge_code(name, round_history):
     """
     Go from name and round history to the code that identifies a challenge.
