@@ -65,6 +65,8 @@ def help_page(request):
         "abbrev": request.POST.get('abbrev'),
         "guess_history": request.POST.get('guess_history'),
         "round_history": request.POST.get('round_history'),
+        "opponent_round_history": request.POST.get('opponent_round_history'),
+        "opponent_name": request.POST.get('opponent_name'),
         "total_points": request.POST.get('total_points'),
         "settings": request.POST.get('settings'),
         "destination": request.POST.get('destination')
