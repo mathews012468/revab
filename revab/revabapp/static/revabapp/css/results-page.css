@@ -11,12 +11,12 @@ section {
     align-items: center;
 }
 
-#first-row div {
+.results-display div {
     flex: 1;
     margin: 0 10px;
 }
 
-#total-points {
+.total-points {
     text-align: center;
     font-size: 3em;
 }

@@ -12,6 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
   <link type="text/css" rel="stylesheet" href="{% static 'revabapp/css/styles.css' %}">
   <link type="text/css" rel="stylesheet" href="{% static 'revabapp/css/results-page.css' %}">
+  <link type="text/css" rel="stylesheet" href="{% static 'revabapp/css/challenge-results-page.css' %}">
   <meta name="viewport" content="width=device-width,initial-scale=1">
 </head>
 <body>
@@ -27,8 +28,11 @@
     </div>
   </header>
   <main>
+    <section>
+        <h2>You {{ result_text }} {{ opponent_name }} {{ total_points }} to {{ opponent_total_points }}!</h2>
+    </section>
     <section class="results-display">
-      <div class="total-points"> Total points: {{ total_points }} </div>
+      <div class="total-points"> Your points: {{ total_points }} </div>
       <div class="round-history">
         <table>
           <thead>
@@ -50,7 +54,30 @@
         </table>
       </div>
     </section>
-    <section id="second-row">
+    <section class="results-display">
+        <div class="total-points"> {{ opponent_name }}'s points: {{ opponent_total_points }} </div>
+        <div class="round-history">
+          <table>
+            <thead>
+              <th></th>
+              <th>Abbreviation</th>
+              <th>Your best guess</th>
+              <th>Score</th>
+            </thead>
+            <tbody>
+              {% for round in opponent_round_history %}
+                <tr>
+                  <td>{{ round.number }}</td>
+                  <td>{{ round.abbrev }}</td>
+                  <td>{{ round.best_guess }}</td>
+                  <td>{{ round.score }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+    </section>
+    <section>
       <form action="/" method="post">
         {% csrf_token %}
         <input type="submit" value="Home">
@@ -63,39 +90,6 @@
         <input type="hidden" name="source" value="results">
         <input type="submit" value="New Game">
       </form>
-    </section>
-    <section id="third-row">
-      {% if path == "results" %}
-      <button>Share results</button>
-      <form action="/challenge/name" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="rounds" value="{{ rounds }}">
-        <input type="hidden" name="abbrev_length" value="{{ abbrev_length }}">
-        <input type="hidden" name="attempts_per_round" value="{{ attempts_per_round }}">
-        <input type="hidden" name="round_history" value="{{ round_history }}">
-        <input type="hidden" name="total_points" value="{{ total_points }}">
-        <input type="submit" value="Challenge a friend">
-      </form>
-      {% elif path == "challenge/name" %}
-      <form action="/challenge/link" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="rounds" value="{{ rounds }}">
-        <input type="hidden" name="abbrev_length" value="{{ abbrev_length }}">
-        <input type="hidden" name="attempts_per_round" value="{{ attempts_per_round }}">
-        <input type="hidden" name="round_history" value="{{ round_history }}">
-        <input type="hidden" name="total_points" value="{{ total_points }}">
-        <label for="name">Enter your name (for your friend to see who is challenging them):</label>
-        <input type="text" placeholder="Name" id="name" name="name">
-        <input type="submit" value="Enter">
-      </form>
-      {% elif path == "challenge/link" %}
-      <div>
-        <label for="link">{{ name }}, send your friend the following link!</label>
-      </div>
-      <div>
-        <input type="text" readonly="readonly" id="link" value="{{ link }}">
-      </div>
-      {% endif %}
     </section>
   </main>
 </body>

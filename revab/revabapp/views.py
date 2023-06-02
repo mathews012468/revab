@@ -196,12 +196,26 @@ def challenge_game(request):
 
     #if game is over, move to results page
     if context["round_number"] > context["rounds"]:
-        #path key used to figure out what to display in the last row of the results page
-        context["path"] = "results"
-        return render(request, "revabapp/results.html", context)
+        #need to pass existing context to make sure last round is in the round history
+        return display_challenge_results(request, context)
 
     #else, stay on the game page
     return render(request, "revabapp/challenge-game.html", context)
+
+def display_challenge_results(request, context):
+    context["opponent_name"] = request.POST.get("opponent_name")
+    context["abbrev_length"] = len(context["round_history"][0]["abbrev"])
+    context["total_points"] = sum([round["score"] for round in context["round_history"]])
+    context["opponent_total_points"] = sum([round["score"] for round in context["opponent_round_history"]])
+    #determine who won
+    if context["total_points"] > context["opponent_total_points"]:
+        context["result_text"] = "won against"
+    elif context["total_points"] == context["opponent_total_points"]:
+        context["result_text"] = "tied"
+    else:
+        context["result_text"] = "lost to"
+
+    return render(request, "revabapp/challenge-results.html", context)
 
 def get_name_for_challenge(request):
     context = reasonable_defaults(request)
