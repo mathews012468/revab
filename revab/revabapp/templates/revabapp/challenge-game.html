@@ -1,0 +1,135 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Revab</title>
+  <meta name="description" content="Find the shortest reverse abbreviation." />
+  <link rel="icon" href="{% static 'revabapp/img/favicon.svg' %}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="{% static 'revabapp/css/styles.css' %}">
+  <link type="text/css" rel="stylesheet" href="{% static 'revabapp/css/game-page.css' %}">
+  <link type="text/css" rel="stylesheet" href="{% static 'revabapp/css/challenge-game-page.css' %}">
+  <script>
+  function init() {
+    let form = document.getElementById("guess-input")
+    function stripGuess() {
+      let guessInput = document.getElementsByName("guess")[0]
+      guessInput.value = guessInput.value.trim()
+    }
+
+    form.addEventListener("submit", stripGuess)
+  }
+
+  document.addEventListener('readystatechange', function() {
+    if (document.readyState === "complete") {
+      init();
+    }
+  });
+  </script>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+
+<body>
+  <header>
+    <h1><a href="/">Revab</a></h1>
+    <div class="icons">
+      <form action="/help" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="abbrev" value="{{ abbrev }}">
+        <input type="hidden" name="rounds" value="{{ rounds }}">
+        <input type="hidden" name="guess_history" value="{{ guess_history }}">
+        <input type="hidden" name="round_history" value="{{ round_history }}">
+        <input type="hidden" name="total_points" value="{{ total_points }}">
+        <input type="hidden" name="opponent_name" value="{{ opponent_name }}">
+        <input type="hidden" name="opponent_round_history" value="{{ opponent_round_history }}">
+        <input type="hidden" name="destination" value="/challenge/game">
+        <button>
+          <img src="{% static 'revabapp/img/question-solid.svg' %}" alt="?">
+        </button>
+      </form>
+      <button id="stats">
+        <img src="{% static 'revabapp/img/chart-simple-solid.svg' %}" alt="stats">
+      </button>
+    </div>
+  </header>
+  <main>
+    <section id="first-row">
+      <div id="total-points">Total Points: {{ total_points }}</div>
+      <div id="round-history">
+        <table>
+          <thead>
+            <th></th>
+            <th>Abbreviation</th>
+            <th>Your best guess</th>
+            <th>Score</th>
+          </thead>
+          <tbody>
+            {% for round in round_history %}
+              <tr>
+                <td>{{ round.number }}</td>
+                <td>{{ round.abbrev }}</td>
+                <td>{{ round.best_guess }}</td>
+                <td>{{ round.score }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <hr />
+    <section id="second-row">
+      <h2>
+        Abbreviation {{ round_number }} of {{ rounds }}
+      </h2>
+      <div id="revab">
+        {% for letter in abbrev %}
+          <span class="revab-letter">{{ letter }}</span>
+        {% endfor %}
+      </div>
+      <form id="guess-input" method="post">
+        {% csrf_token %}
+        <div class="guess-input-row">
+          <input type="hidden" name="abbrev" value="{{ abbrev }}">
+          <input type="hidden" name="total_points" value="{{ total_points }}">
+          <input type="hidden" name="round_history" value="{{ round_history }}">
+          <input type="hidden" name="guess_history" value="{{ guess_history }}">
+          <input type="hidden" name="opponent_name" value="{{ opponent_name }}">
+          <input type="hidden" name="opponent_round_history" value="{{ opponent_round_history }}">
+          <input type="text" name="guess" placeholder="Guess" id="revab-guess">
+          <input type="submit" name="submitbutton" value="Guess">
+        </div>
+        <div>or</div>
+        <input type="submit" name="submitbutton" value="No revab possible">
+      </form>
+    </section>
+    <hr />
+    <section id="third-row">
+      <h2>Guess history</h2>
+      <table>
+        <thead>
+          <th></th>
+          <th>Guess</th>
+          <th>Result</th>
+          <th>Points</th>
+        </thead>
+        <tbody>
+          {% for guess in guess_history %}
+            <tr>
+              <td>{{ guess.number }}</td>
+              <td>{{ guess.guess }}</td>
+              <td>{{ guess.result }}</td>
+              <td>{{ guess.score }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+
+</html>

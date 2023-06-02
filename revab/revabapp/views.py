@@ -134,6 +134,75 @@ def game(request):
     #else, stay on the game page
     return render(request, "revabapp/game.html", context)
 
+def challenge_game(request):
+    #round_history, guess_history, total_points are all fine
+    #attempts_per_round is probably good too since I don't
+    #provide it a value and the default is 3 (which is what I want)
+    context = reasonable_defaults(request)
+    context["opponent_name"] = request.POST.get("opponent_name")
+    context["abbrev"] = context["opponent_round_history"][context["round_number"] - 1]["abbrev"]
+
+    #if we come from the help page, just load the page, don't do any computations
+    if request.POST.get("source") in {"help", "home"}:
+        return render(request, "revabapp/challenge-game.html", context)
+
+    #submit user guess
+    words = load_words()
+    guess_type = request.POST.get('submitbutton')
+    #guess is what I submit on behalf of the user, context["user_guess"] is what gets shown
+    # on the website. In most cases these should be the same; they're different only when the
+    # user thinks that no revabs exist. There is a special string representing the guess
+    # "no revabs exist" in code that I don't want to expose to the user.
+    guess = context["user_guess"]
+    if guess_type != "Guess":
+        guess = NO_REVABS_POSSIBLE
+        context["user_guess"] = NO_REVABS_GUESS_MESSAGE
+    outcome, score = check_user_guess(context["abbrev"], guess, words)
+    
+    #calculate score
+    round_score = 0
+    for guess in context["guess_history"]:
+        if guess["score"] == EMPTY:
+            break
+        if guess["score"] > round_score:
+            round_score = guess["score"]
+    round_score = max(round_score, score)
+    
+    #update guess history
+    if outcome == GuessOutcome.BEST_WORD or outcome == GuessOutcome.NONE_IS_CORRECT:
+        #this is my signal that the round is over later on
+        context["attempt_number"] = context["attempts_per_round"]
+    context["guess_history"][context["attempt_number"] - 1] = {
+        "number": context["attempt_number"], 
+        "guess": context["user_guess"], 
+        "result": outcome.value, 
+        "score": score
+    }
+
+    #if necessary, update round history and generate new round info
+    if context["attempt_number"] == context["attempts_per_round"]:
+        context["round_history"][context["round_number"] - 1] = {
+            "number": context["round_number"], 
+            "abbrev": context["abbrev"], 
+            "best_guess": best_guess(context["guess_history"]), 
+            "score": round_score
+        }
+        #avoid an index error when we reach the end of the game
+        if context["round_number"] < context["rounds"]:
+            context["abbrev"] = context["opponent_round_history"][context["round_number"]]["abbrev"]
+        context["total_points"] += round_score
+        context["guess_history"] = [{"number": i+1, "guess": EMPTY, "result": EMPTY, "score": EMPTY} for i in range(context["attempts_per_round"])]
+        context["round_number"] += 1
+
+    #if game is over, move to results page
+    if context["round_number"] > context["rounds"]:
+        #path key used to figure out what to display in the last row of the results page
+        context["path"] = "results"
+        return render(request, "revabapp/results.html", context)
+
+    #else, stay on the game page
+    return render(request, "revabapp/challenge-game.html", context)
+
 def get_name_for_challenge(request):
     context = reasonable_defaults(request)
     context["path"] = "challenge/name"
@@ -198,6 +267,12 @@ def reasonable_defaults(request):
         total_points = "0"
     total_points = int(total_points)
 
+    opponent_round_history = request.POST.get("opponent_round_history")
+    if validate_round_history(opponent_round_history):
+        #if opponent round history is valid, that should set the number of rounds
+        opponent_round_history = json.loads(opponent_round_history.replace("\'", "\""))
+        rounds = len(opponent_round_history)
+
     round_history = request.POST.get("round_history")
     if not validate_round_history(round_history, rounds):
         round_history = json.dumps([{"number": i+1, "abbrev": EMPTY, "best_guess": EMPTY, "score": EMPTY} for i in range(rounds)])
@@ -227,6 +302,7 @@ def reasonable_defaults(request):
         "guess_history": guess_history,
         "total_points": total_points,
         "round_history": round_history,
+        "opponent_round_history": opponent_round_history,
         "round_number": round_number,
         "attempt_number": attempt_number
     }

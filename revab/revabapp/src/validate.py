@@ -63,7 +63,7 @@ def validate_total_points(total_points):
     total_points_pattern = r'^\d{1,3}$'
     return validate_input(total_points, total_points_pattern)
 
-def validate_round_history(round_history, rounds):
+def validate_round_history(round_history, rounds=None):
     """
     Return True if round_history is in valid format, False otherwise
     """
@@ -82,7 +82,7 @@ def validate_round_history(round_history, rounds):
         return False
     
     #length of round history should be the number of rounds
-    if len(round_history) != rounds:
+    if len(round_history) != rounds and rounds is not None:
         return False
     
     #each element in round history should be a dict with the keys 'number', 'abbrev', 'best_guess', and 'score'

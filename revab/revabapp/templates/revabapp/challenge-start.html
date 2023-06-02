@@ -35,6 +35,7 @@
         {% csrf_token %}
         <input type="hidden" name="opponent_name" value="{{ opponent_name }}">
         <input type="hidden" name="opponent_round_history" value="{{ opponent_round_history }}">
+        <input type="hidden" name="source" value="home">
         <input type="submit" value="Start">
       </form>
     </div>
