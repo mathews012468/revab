@@ -230,7 +230,7 @@ def display_challenge_link(request):
     context["name"] = request.POST.get("name")
     context["path"] = "challenge/link"
     challenge_code = get_challenge_code(context["name"], context["round_history"])
-    context["link"] = f"http://revab.us/challenge/start/{challenge_code}"
+    context["link"] = f"https://revab.us/challenge/start/{challenge_code}"
 
     return render(request, "revabapp/results.html", context)
 
